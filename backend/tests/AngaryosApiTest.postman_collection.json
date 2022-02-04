@@ -1,0 +1,4407 @@
+{
+	"info": {
+		"_postman_id": "f9d7edde-b616-4c75-8e06-766adbe76307",
+		"name": "Angaryos Api Test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Base",
+			"item": [
+				{
+					"name": "Api Base Control",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//Global Functions\r",
+									"\r",
+									"var temp = function loadUtils() \r",
+									"{\r",
+									"    let utils = {};\r",
+									"\r",
+									"    utils.idNumberControl = function idNumberControl(id) \r",
+									"    {\r",
+									"        pm.test(\"id is correct type\", function () \r",
+									"        {\r",
+									"            pm.expect(id).to.be.a('number');\r",
+									"        });\r",
+									"    };\r",
+									"\r",
+									"    utils.standartControl = function standartControl() \r",
+									"    {\r",
+									"        pm.test(\"Status code is 200\", function () \r",
+									"        {\r",
+									"            pm.response.to.have.status(200);\r",
+									"        });\r",
+									"    };\r",
+									"\r",
+									"    utils.messageControl = function messageControl(message, control) \r",
+									"    {\r",
+									"        pm.test(\"Message is '\"+control+\"'\", function () \r",
+									"        {\r",
+									"            pm.expect(message).to.eql(control);\r",
+									"        });\r",
+									"    };\r",
+									"\r",
+									"    utils.equalControl = function equalControl(var1, var2) \r",
+									"    {\r",
+									"        pm.test(\"Equal control\", function () \r",
+									"        {\r",
+									"            pm.expect(var1).to.eql(var2);\r",
+									"        });\r",
+									"    };\r",
+									"\r",
+									"    utils.typeControl = function typeControl(param, typeName) \r",
+									"    {\r",
+									"        pm.test(\"Variable type control\", function () \r",
+									"        {\r",
+									"            pm.expect(param).to.be.a(typeName);\r",
+									"        });\r",
+									"    };\r",
+									"\r",
+									"    utils.isTrue = function isTrue(param) \r",
+									"    {\r",
+									"        pm.test(\"isTrue control\", function () \r",
+									"        {\r",
+									"            pm.expect(param).to.be.true;\r",
+									"        });\r",
+									"    };\r",
+									"\r",
+									"    return utils;\r",
+									"\r",
+									"};\r",
+									"\r",
+									"pm.globals.set('loadUtils', temp + '; loadUtils();');\r",
+									"\r",
+									"\r",
+									"\r",
+									"// Tests\r",
+									"\r",
+									"var data = pm.response.json();\r",
+									"\r",
+									"const utils = eval(globals.loadUtils);\r",
+									"utils.standartControl();\r",
+									"utils.messageControl(data[\"data\"][\"message\"], \"service.ok\");\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiBaseUrl}}",
+							"host": [
+								"{{apiBaseUrl}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Api Version Control",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var data = pm.response.json();\r",
+									"\r",
+									"const utils = eval(globals.loadUtils);\r",
+									"utils.standartControl();\r",
+									"utils.messageControl(data[\"data\"][\"message\"], \"service.ok\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}",
+							"host": [
+								"{{apiUrl}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var data = pm.response.json();\r",
+									"var token = data[\"data\"][\"token\"]\r",
+									"pm.environment.set(\"token\", token);\r",
+									"\r",
+									"const utils = eval(globals.loadUtils);\r",
+									"utils.standartControl();\r",
+									"utils.typeControl(token, 'string');\r",
+									"\r",
+									"pm.test(\"Token length control\", function () \r",
+									"{\r",
+									"    pm.expect(token.length > 10).to.be.true;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{apiUrl}}login?email=iletisim@omersavas.com&password=1234Aa.&clientInfo={\"type\":\"postman\", \"clientInfo\":\"Angaryos Api Test\"}",
+							"host": [
+								"{{apiUrl}}login"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "iletisim@omersavas.com"
+								},
+								{
+									"key": "password",
+									"value": "1234Aa."
+								},
+								{
+									"key": "clientInfo",
+									"value": "{\"type\":\"postman\", \"clientInfo\":\"Angaryos Api Test\"}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Logged In User Info",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var data = pm.response.json();\r",
+									"var info = data[\"data\"]\r",
+									"\r",
+									"const utils = eval(globals.loadUtils);\r",
+									"utils.standartControl();\r",
+									"\r",
+									"utils.isTrue(typeof info[\"auths\"] != \"undefined\");\r",
+									"utils.isTrue(typeof info[\"user\"] != \"undefined\");\r",
+									"utils.isTrue(typeof info[\"menu\"] != \"undefined\");\r",
+									"\r",
+									"\r",
+									"\r",
+									"//Set variables \r",
+									"\r",
+									"pm.environment.set(\"loggedInUserInfo\", JSON.stringify(info));\r",
+									"\r",
+									"pm.environment.set(\"columnsTableColumnArrayId\", info[\"auths\"][\"tables\"][\"columns\"][\"lists\"][0]);\r",
+									"pm.environment.set(\"columnsTableColumnArrayIdQuery\", info[\"auths\"][\"tables\"][\"columns\"][\"queries\"][0]);\r",
+									"pm.environment.set(\"columnsTableColumnCreateSetId\", info[\"auths\"][\"tables\"][\"columns\"][\"creates\"][0]);\r",
+									"pm.environment.set(\"columnsTableColumnUpdateSetId\", info[\"auths\"][\"tables\"][\"columns\"][\"edits\"][0]);\r",
+									"\r",
+									"pm.environment.set(\"columnValidationsTableColumnArrayId\", info[\"auths\"][\"tables\"][\"column_validations\"][\"lists\"][0]);\r",
+									"pm.environment.set(\"columnValidationsTableColumnArrayIdQuery\", info[\"auths\"][\"tables\"][\"column_validations\"][\"queries\"][0]);\r",
+									"\r",
+									"pm.environment.set(\"columnDbTypesTableColumnArrayId\", info[\"auths\"][\"tables\"][\"column_db_types\"][\"lists\"][0]);\r",
+									"pm.environment.set(\"columnDbTypesTableColumnArrayIdQuery\", info[\"auths\"][\"tables\"][\"column_db_types\"][\"queries\"][0]);\r",
+									"\r",
+									"pm.environment.set(\"columnGuiTypesTableColumnArrayId\", info[\"auths\"][\"tables\"][\"column_gui_types\"][\"lists\"][0]);\r",
+									"pm.environment.set(\"columnGuiTypesTableColumnArrayIdQuery\", info[\"auths\"][\"tables\"][\"column_gui_types\"][\"queries\"][0]);\r",
+									"\r",
+									"pm.environment.set(\"upColumnsTableColumnCreateSetId\", info[\"auths\"][\"tables\"][\"up_columns\"][\"creates\"][0]);\r",
+									"\r",
+									"pm.environment.set(\"columnTableRelationsTableColumnCreateSetId\", info[\"auths\"][\"tables\"][\"column_table_relations\"][\"creates\"][0]);\r",
+									"\r",
+									"pm.environment.set(\"joinTablesTableColumnCreateSetId\", info[\"auths\"][\"tables\"][\"join_tables\"][\"creates\"][0]);\r",
+									"\r",
+									"pm.environment.set(\"columnDataSourcesTableColumnCreateSetId\", info[\"auths\"][\"tables\"][\"column_data_sources\"][\"creates\"][0]);\r",
+									"\r",
+									"pm.environment.set(\"tablesTableColumnCreateSetId\", info[\"auths\"][\"tables\"][\"tables\"][\"creates\"][0]);\r",
+									"pm.environment.set(\"tablesTableColumnUpdateSetId\", info[\"auths\"][\"tables\"][\"tables\"][\"edits\"][0]);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}{{token}}/getLoggedInUserInfo",
+							"host": [
+								"{{apiUrl}}{{token}}"
+							],
+							"path": [
+								"getLoggedInUserInfo"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Dashboards",
+			"item": [
+				{
+					"name": "Auth Groups Count",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var data = pm.response.json();\r",
+									"\r",
+									"const utils = eval(globals.loadUtils);\r",
+									"utils.standartControl();\r",
+									"utils.typeControl(data[\"data\"][\"table_display_name\"], 'string');\r",
+									"utils.typeControl(data[\"data\"][\"count\"], 'number');\r",
+									"utils.typeControl(data[\"data\"][\"all\"], 'number');\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}{{token}}/dashboards/getData/dashboards:RecordCount:auth_groups:0",
+							"host": [
+								"{{apiUrl}}{{token}}"
+							],
+							"path": [
+								"dashboards",
+								"getData",
+								"dashboards:RecordCount:auth_groups:0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Users Count",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var data = pm.response.json();\r",
+									"\r",
+									"const utils = eval(globals.loadUtils);\r",
+									"utils.standartControl();\r",
+									"utils.typeControl(data[\"data\"][\"table_display_name\"], 'string');\r",
+									"utils.typeControl(data[\"data\"][\"count\"], 'number');\r",
+									"utils.typeControl(data[\"data\"][\"all\"], 'number');\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}{{token}}/dashboards/getData/dashboards:RecordCount:users:0",
+							"host": [
+								"{{apiUrl}}{{token}}"
+							],
+							"path": [
+								"dashboards",
+								"getData",
+								"dashboards:RecordCount:users:0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Departments Count",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var data = pm.response.json();\r",
+									"\r",
+									"const utils = eval(globals.loadUtils);\r",
+									"utils.standartControl();\r",
+									"utils.typeControl(data[\"data\"][\"table_display_name\"], 'string');\r",
+									"utils.typeControl(data[\"data\"][\"count\"], 'number');\r",
+									"utils.typeControl(data[\"data\"][\"all\"], 'number');\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}{{token}}/dashboards/getData/dashboards:RecordCount:departments:0",
+							"host": [
+								"{{apiUrl}}{{token}}"
+							],
+							"path": [
+								"dashboards",
+								"getData",
+								"dashboards:RecordCount:departments:0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Current Jobs Count",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var data = pm.response.json();\r",
+									"\r",
+									"const utils = eval(globals.loadUtils);\r",
+									"utils.standartControl();\r",
+									"utils.typeControl(data[\"data\"][\"display_name\"], 'string');\r",
+									"utils.typeControl(data[\"data\"][\"number\"], 'number');"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}{{token}}/dashboards/getData/dashboards:RefreshableNumber:JobCount:0",
+							"host": [
+								"{{apiUrl}}{{token}}"
+							],
+							"path": [
+								"dashboards",
+								"getData",
+								"dashboards:RefreshableNumber:JobCount:0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Graphic XY Test",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var data = pm.response.json();\r",
+									"\r",
+									"const utils = eval(globals.loadUtils);\r",
+									"utils.standartControl();\r",
+									"utils.typeControl(data[\"data\"][\"title\"], 'string');"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}{{token}}/dashboards/getData/dashboards:GraphicXY:Test:0",
+							"host": [
+								"{{apiUrl}}{{token}}"
+							],
+							"path": [
+								"dashboards",
+								"getData",
+								"dashboards:GraphicXY:Test:0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Graphic Pie Test",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var data = pm.response.json();\r",
+									"\r",
+									"const utils = eval(globals.loadUtils);\r",
+									"utils.standartControl();\r",
+									"utils.typeControl(data[\"data\"][\"title\"], 'string');"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}{{token}}/dashboards/getData/dashboards:GraphicPie:Test:0",
+							"host": [
+								"{{apiUrl}}{{token}}"
+							],
+							"path": [
+								"dashboards",
+								"getData",
+								"dashboards:GraphicPie:Test:0"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tables And Columns",
+			"item": [
+				{
+					"name": "Preload For Up Column",
+					"item": [
+						{
+							"name": "Get name_basic column id",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var data = pm.response.json();\r",
+											"var id = data[\"data\"][\"records\"][0][\"id\"]\r",
+											"pm.environment.set(\"columnsNameBasicId\", id);\r",
+											"\r",
+											"const utils = eval(globals.loadUtils);\r",
+											"utils.standartControl();\r",
+											"utils.idNumberControl(id);\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{apiUrl}}{{token}}/tables/columns/?params={\"page\":1,\"limit\":\"1\",\"column_array_id\":\"{{columnsTableColumnArrayId}}\",\"column_array_id_query\":\"{{columnsTableColumnArrayIdQuery}}\",\"sorts\":{},\"filters\":{\"name\":{\"type\":4,\"guiType\":\"string\",\"filter\":\"name_basic\"}}}",
+									"host": [
+										"{{apiUrl}}{{token}}"
+									],
+									"path": [
+										"tables",
+										"columns",
+										""
+									],
+									"query": [
+										{
+											"key": "params",
+											"value": "{\"page\":1,\"limit\":\"1\",\"column_array_id\":\"{{columnsTableColumnArrayId}}\",\"column_array_id_query\":\"{{columnsTableColumnArrayIdQuery}}\",\"sorts\":{},\"filters\":{\"name\":{\"type\":4,\"guiType\":\"string\",\"filter\":\"name_basic\"}}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get id column id",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var data = pm.response.json();\r",
+											"var id = data[\"data\"][\"records\"][0][\"id\"]\r",
+											"pm.environment.set(\"columnsIdId\", id);\r",
+											"\r",
+											"const utils = eval(globals.loadUtils);\r",
+											"utils.standartControl();\r",
+											"utils.idNumberControl(id);\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{apiUrl}}{{token}}/tables/columns/?params={\"page\":1,\"limit\":\"1\",\"column_array_id\":\"{{columnsTableColumnArrayId}}\",\"column_array_id_query\":\"{{columnsTableColumnArrayIdQuery}}\",\"sorts\":{},\"filters\":{\"name\":{\"type\":4,\"guiType\":\"string\",\"filter\":\"id\"}}}",
+									"host": [
+										"{{apiUrl}}{{token}}"
+									],
+									"path": [
+										"tables",
+										"columns",
+										""
+									],
+									"query": [
+										{
+											"key": "params",
+											"value": "{\"page\":1,\"limit\":\"1\",\"column_array_id\":\"{{columnsTableColumnArrayId}}\",\"column_array_id_query\":\"{{columnsTableColumnArrayIdQuery}}\",\"sorts\":{},\"filters\":{\"name\":{\"type\":4,\"guiType\":\"string\",\"filter\":\"id\"}}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Iller Table",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var data = pm.response.json();\r",
+											"var id = data[\"data\"][\"id\"]\r",
+											"pm.environment.set(\"tablesIllerId\", id);\r",
+											"\r",
+											"const utils = eval(globals.loadUtils);\r",
+											"utils.standartControl();\r",
+											"utils.idNumberControl(id);\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{apiUrl}}{{token}}/tables/tables/store?display_name=İller&name=iller&column_ids=[\"{{columnsNameBasicId}}\"]&subscriber_ids=[]&legend_url&e_sign_pattern_t&description&link_description&state=1&column_set_id={{tablesTableColumnCreateSetId}}&id=0",
+									"host": [
+										"{{apiUrl}}{{token}}"
+									],
+									"path": [
+										"tables",
+										"tables",
+										"store"
+									],
+									"query": [
+										{
+											"key": "display_name",
+											"value": "İller"
+										},
+										{
+											"key": "name",
+											"value": "iller"
+										},
+										{
+											"key": "column_ids",
+											"value": "[\"{{columnsNameBasicId}}\"]"
+										},
+										{
+											"key": "subscriber_ids",
+											"value": "[]"
+										},
+										{
+											"key": "legend_url",
+											"value": null
+										},
+										{
+											"key": "e_sign_pattern_t",
+											"value": null
+										},
+										{
+											"key": "description",
+											"value": null
+										},
+										{
+											"key": "link_description",
+											"value": null
+										},
+										{
+											"key": "state",
+											"value": "1"
+										},
+										{
+											"key": "column_set_id",
+											"value": "{{tablesTableColumnCreateSetId}}"
+										},
+										{
+											"key": "id",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Cache Clear",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var data = pm.response.json();\r",
+											"\r",
+											"const utils = eval(globals.loadUtils);\r",
+											"utils.standartControl();\r",
+											"utils.messageControl(data[\"data\"][\"message\"], \"Cache Cleared\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{apiUrl}}{{token}}/missions/1",
+									"host": [
+										"{{apiUrl}}{{token}}"
+									],
+									"path": [
+										"missions",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Kutahya Record Into Iller Table",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var data = pm.response.json();\r",
+											"var id = data[\"data\"][\"id\"]\r",
+											"pm.environment.set(\"illerKutahyaId\", id);\r",
+											"\r",
+											"const utils = eval(globals.loadUtils);\r",
+											"utils.standartControl();\r",
+											"utils.idNumberControl(id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{apiUrl}}{{token}}/tables/iller/store?name_basic=Kütahya&state=1&column_set_id=0&id=0",
+									"host": [
+										"{{apiUrl}}{{token}}"
+									],
+									"path": [
+										"tables",
+										"iller",
+										"store"
+									],
+									"query": [
+										{
+											"key": "name_basic",
+											"value": "Kütahya"
+										},
+										{
+											"key": "state",
+											"value": "1"
+										},
+										{
+											"key": "column_set_id",
+											"value": "0"
+										},
+										{
+											"key": "id",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Eskisehir Record Into Iller Table",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var data = pm.response.json();\r",
+											"var id = data[\"data\"][\"id\"]\r",
+											"pm.environment.set(\"illerEskisehirId\", id);\r",
+											"\r",
+											"const utils = eval(globals.loadUtils);\r",
+											"utils.standartControl();\r",
+											"utils.idNumberControl(id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{apiUrl}}{{token}}/tables/iller/store?name_basic=Eskişehir&state=1&column_set_id=0&id=0",
+									"host": [
+										"{{apiUrl}}{{token}}"
+									],
+									"path": [
+										"tables",
+										"iller",
+										"store"
+									],
+									"query": [
+										{
+											"key": "name_basic",
+											"value": "Eskişehir"
+										},
+										{
+											"key": "state",
+											"value": "1"
+										},
+										{
+											"key": "column_set_id",
+											"value": "0"
+										},
+										{
+											"key": "id",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get iller_id column id",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var data = pm.response.json();\r",
+											"var id = data[\"data\"][\"records\"][0][\"id\"]\r",
+											"pm.environment.set(\"columnsIllerIdId\", id);\r",
+											"\r",
+											"const utils = eval(globals.loadUtils);\r",
+											"utils.standartControl();\r",
+											"utils.idNumberControl(id);\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{apiUrl}}{{token}}/tables/columns/?params={\"page\":1,\"limit\":\"1\",\"column_array_id\":\"{{columnsTableColumnArrayId}}\",\"column_array_id_query\":\"{{columnsTableColumnArrayIdQuery}}\",\"sorts\":{},\"filters\":{\"name\":{\"type\":4,\"guiType\":\"string\",\"filter\":\"iller_id\"}}}",
+									"host": [
+										"{{apiUrl}}{{token}}"
+									],
+									"path": [
+										"tables",
+										"columns",
+										""
+									],
+									"query": [
+										{
+											"key": "params",
+											"value": "{\"page\":1,\"limit\":\"1\",\"column_array_id\":\"{{columnsTableColumnArrayId}}\",\"column_array_id_query\":\"{{columnsTableColumnArrayIdQuery}}\",\"sorts\":{},\"filters\":{\"name\":{\"type\":4,\"guiType\":\"string\",\"filter\":\"iller_id\"}}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Ilceler Table",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var data = pm.response.json();\r",
+											"var id = data[\"data\"][\"id\"]\r",
+											"pm.environment.set(\"tablesIlcelerId\", id);\r",
+											"\r",
+											"const utils = eval(globals.loadUtils);\r",
+											"utils.standartControl();\r",
+											"utils.idNumberControl(id);\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{apiUrl}}{{token}}/tables/tables/store?display_name=İlçeler&name=ilceler&column_ids=[\"{{columnsNameBasicId}}\", \"{{columnsIllerIdId}}\"]&subscriber_ids=[]&legend_url&e_sign_pattern_t&description&link_description&state=1&column_set_id={{tablesTableColumnCreateSetId}}&id=0",
+									"host": [
+										"{{apiUrl}}{{token}}"
+									],
+									"path": [
+										"tables",
+										"tables",
+										"store"
+									],
+									"query": [
+										{
+											"key": "display_name",
+											"value": "İlçeler"
+										},
+										{
+											"key": "name",
+											"value": "ilceler"
+										},
+										{
+											"key": "column_ids",
+											"value": "[\"{{columnsNameBasicId}}\", \"{{columnsIllerIdId}}\"]"
+										},
+										{
+											"key": "subscriber_ids",
+											"value": "[]"
+										},
+										{
+											"key": "legend_url",
+											"value": null
+										},
+										{
+											"key": "e_sign_pattern_t",
+											"value": null
+										},
+										{
+											"key": "description",
+											"value": null
+										},
+										{
+											"key": "link_description",
+											"value": null
+										},
+										{
+											"key": "state",
+											"value": "1"
+										},
+										{
+											"key": "column_set_id",
+											"value": "{{tablesTableColumnCreateSetId}}"
+										},
+										{
+											"key": "id",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Cache Clear",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var data = pm.response.json();\r",
+											"\r",
+											"const utils = eval(globals.loadUtils);\r",
+											"utils.standartControl();\r",
+											"utils.messageControl(data[\"data\"][\"message\"], \"Cache Cleared\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{apiUrl}}{{token}}/missions/1",
+									"host": [
+										"{{apiUrl}}{{token}}"
+									],
+									"path": [
+										"missions",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Altintas Record Into Ilceler Table",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var data = pm.response.json();\r",
+											"var id = data[\"data\"][\"id\"]\r",
+											"pm.environment.set(\"ilcelerAltintasId\", id);\r",
+											"\r",
+											"const utils = eval(globals.loadUtils);\r",
+											"utils.standartControl();\r",
+											"utils.idNumberControl(id);\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{apiUrl}}{{token}}/tables/ilceler/store?name_basic=Altıntaş&iller_id={{illerKutahyaId}}&state=1&column_set_id=0&id=0",
+									"host": [
+										"{{apiUrl}}{{token}}"
+									],
+									"path": [
+										"tables",
+										"ilceler",
+										"store"
+									],
+									"query": [
+										{
+											"key": "name_basic",
+											"value": "Altıntaş"
+										},
+										{
+											"key": "iller_id",
+											"value": "{{illerKutahyaId}}"
+										},
+										{
+											"key": "state",
+											"value": "1"
+										},
+										{
+											"key": "column_set_id",
+											"value": "0"
+										},
+										{
+											"key": "id",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Sivrihisar Record Into Ilceler Table",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var data = pm.response.json();\r",
+											"var id = data[\"data\"][\"id\"]\r",
+											"pm.environment.set(\"ilcelerSivrihisarId\", id);\r",
+											"\r",
+											"const utils = eval(globals.loadUtils);\r",
+											"utils.standartControl();\r",
+											"utils.idNumberControl(id);\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{apiUrl}}{{token}}/tables/ilceler/store?name_basic=Sivrihisar&iller_id={{illerEskisehirId}}&state=1&column_set_id=0&id=0",
+									"host": [
+										"{{apiUrl}}{{token}}"
+									],
+									"path": [
+										"tables",
+										"ilceler",
+										"store"
+									],
+									"query": [
+										{
+											"key": "name_basic",
+											"value": "Sivrihisar"
+										},
+										{
+											"key": "iller_id",
+											"value": "{{illerEskisehirId}}"
+										},
+										{
+											"key": "state",
+											"value": "1"
+										},
+										{
+											"key": "column_set_id",
+											"value": "0"
+										},
+										{
+											"key": "id",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Columns",
+					"item": [
+						{
+							"name": "Get All Column Db Types",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var data = pm.response.json();\r",
+											"var recs = data[\"data\"][\"records\"];\r",
+											"\r",
+											"const utils = eval(globals.loadUtils);\r",
+											"utils.standartControl();\r",
+											"\r",
+											"for(var i = 0; i < recs.length; i++)\r",
+											"{\r",
+											"    var rec = recs[i];\r",
+											"\r",
+											"    var id = rec[\"id\"];\r",
+											"    var name = rec[\"name\"]\r",
+											"\r",
+											"    pm.environment.set(\"columnDbTypes_\"+name+\"_Id\", id);\r",
+											"    utils.idNumberControl(id);\r",
+											"}\r",
+											"    \r",
+											"    "
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{apiUrl}}{{token}}/tables/column_db_types/?params={\"page\":1,\"limit\":\"100\",\"column_array_id\":\"{{columnDbTypesTableColumnArrayId}}\",\"column_array_id_query\":\"{{columnDbTypesTableColumnArrayIdQuery}}\",\"sorts\":{},\"filters\":{}}",
+									"host": [
+										"{{apiUrl}}{{token}}"
+									],
+									"path": [
+										"tables",
+										"column_db_types",
+										""
+									],
+									"query": [
+										{
+											"key": "params",
+											"value": "{\"page\":1,\"limit\":\"100\",\"column_array_id\":\"{{columnDbTypesTableColumnArrayId}}\",\"column_array_id_query\":\"{{columnDbTypesTableColumnArrayIdQuery}}\",\"sorts\":{},\"filters\":{}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get All Column Gui Types",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var data = pm.response.json();\r",
+											"var recs = data[\"data\"][\"records\"];\r",
+											"\r",
+											"const utils = eval(globals.loadUtils);\r",
+											"utils.standartControl();\r",
+											"\r",
+											"for(var i = 0; i < recs.length; i++)\r",
+											"{\r",
+											"    var rec = recs[i];\r",
+											"\r",
+											"    var id = rec[\"id\"];\r",
+											"    var name = rec[\"name\"]\r",
+											"\r",
+											"    pm.environment.set(\"columnGuiTypes_\"+name+\"_Id\", id);\r",
+											"    utils.idNumberControl(id);    \r",
+											"}\r",
+											"    "
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{apiUrl}}{{token}}/tables/column_gui_types/?params={\"page\":1,\"limit\":\"100\",\"column_array_id\":\"{{columnGuiTypesTableColumnArrayId}}\",\"column_array_id_query\":\"{{columnGuiTypesTableColumnArrayIdQuery}}\",\"sorts\":{},\"filters\":{}}",
+									"host": [
+										"{{apiUrl}}{{token}}"
+									],
+									"path": [
+										"tables",
+										"column_gui_types",
+										""
+									],
+									"query": [
+										{
+											"key": "params",
+											"value": "{\"page\":1,\"limit\":\"100\",\"column_array_id\":\"{{columnGuiTypesTableColumnArrayId}}\",\"column_array_id_query\":\"{{columnGuiTypesTableColumnArrayIdQuery}}\",\"sorts\":{},\"filters\":{}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get All Column Validations Types",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"function clearName(str)\r",
+											"{\r",
+											"    str = str.split(\":\").join(\"_\");\r",
+											"    str = str.split(\".\").join(\"_\");\r",
+											"    str = str.split(\",\").join(\"_\");\r",
+											"    str = str.split('\"').join(\"_\");\r",
+											"    str = str.split(\"'\").join(\"_\");\r",
+											"    str = str.split(\"-\").join(\"_\");\r",
+											"\r",
+											"    return str;\r",
+											"}\r",
+											"\r",
+											"var data = pm.response.json();\r",
+											"var recs = data[\"data\"][\"records\"];\r",
+											"\r",
+											"const utils = eval(globals.loadUtils);\r",
+											"utils.standartControl();\r",
+											"\r",
+											"for(var i = 0; i < recs.length; i++)\r",
+											"{\r",
+											"    var rec = recs[i];\r",
+											"\r",
+											"    var id = rec[\"id\"];\r",
+											"    \r",
+											"    var name = rec[\"validation_with_params\"]\r",
+											"    name = clearName(name);\r",
+											"\r",
+											"    pm.environment.set(\"columnValidation_\"+name+\"_Id\", id);\r",
+											"    utils.idNumberControl(id); \r",
+											"}\r",
+											"    "
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{apiUrl}}{{token}}/tables/column_validations/?params={\"page\":1,\"limit\":\"100\",\"column_array_id\":\"{{columnValidationsTableColumnArrayId}}\",\"column_array_id_query\":\"{{columnValidationsTableColumnArrayIdQuery}}\",\"sorts\":{},\"filters\":{}}",
+									"host": [
+										"{{apiUrl}}{{token}}"
+									],
+									"path": [
+										"tables",
+										"column_validations",
+										""
+									],
+									"query": [
+										{
+											"key": "params",
+											"value": "{\"page\":1,\"limit\":\"100\",\"column_array_id\":\"{{columnValidationsTableColumnArrayId}}\",\"column_array_id_query\":\"{{columnValidationsTableColumnArrayIdQuery}}\",\"sorts\":{},\"filters\":{}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Json Column",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var data = pm.response.json();\r",
+											"var id = data[\"data\"][\"id\"]\r",
+											"pm.environment.set(\"columnsColJsonId\", id);\r",
+											"\r",
+											"const utils = eval(globals.loadUtils);\r",
+											"utils.standartControl();\r",
+											"utils.idNumberControl(id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{apiUrl}}{{token}}/tables/columns/store?display_name=Json Kolon&name=column_json&column_db_type_id={{columnDbTypes_json_Id}}&column_gui_type_id={{columnGuiTypes_jsonb_Id}}&srid&up_column_id&column_table_relation_id&subscriber_ids=[]&column_validation_ids=[\"{{columnValidation_required_Id}}\",\"{{columnValidation_json_Id}}\"]&column_gui_trigger_ids=[]&column_collective_info_id&default&e_sign_pattern_c&column_info&description&state=1&column_set_id={{columnsTableColumnCreateSetId}}&id=0",
+									"host": [
+										"{{apiUrl}}{{token}}"
+									],
+									"path": [
+										"tables",
+										"columns",
+										"store"
+									],
+									"query": [
+										{
+											"key": "display_name",
+											"value": "Json Kolon"
+										},
+										{
+											"key": "name",
+											"value": "column_json"
+										},
+										{
+											"key": "column_db_type_id",
+											"value": "{{columnDbTypes_json_Id}}"
+										},
+										{
+											"key": "column_gui_type_id",
+											"value": "{{columnGuiTypes_jsonb_Id}}"
+										},
+										{
+											"key": "srid",
+											"value": null
+										},
+										{
+											"key": "up_column_id",
+											"value": null
+										},
+										{
+											"key": "column_table_relation_id",
+											"value": null
+										},
+										{
+											"key": "subscriber_ids",
+											"value": "[]"
+										},
+										{
+											"key": "column_validation_ids",
+											"value": "[\"{{columnValidation_required_Id}}\",\"{{columnValidation_json_Id}}\"]"
+										},
+										{
+											"key": "column_gui_trigger_ids",
+											"value": "[]"
+										},
+										{
+											"key": "column_collective_info_id",
+											"value": null
+										},
+										{
+											"key": "default",
+											"value": null
+										},
+										{
+											"key": "e_sign_pattern_c",
+											"value": null
+										},
+										{
+											"key": "column_info",
+											"value": null
+										},
+										{
+											"key": "description",
+											"value": null
+										},
+										{
+											"key": "state",
+											"value": "1"
+										},
+										{
+											"key": "column_set_id",
+											"value": "{{columnsTableColumnCreateSetId}}"
+										},
+										{
+											"key": "id",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create JsonB Column",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var data = pm.response.json();\r",
+											"var id = data[\"data\"][\"id\"]\r",
+											"pm.environment.set(\"columnsColJsonBId\", id);\r",
+											"\r",
+											"const utils = eval(globals.loadUtils);\r",
+											"utils.standartControl();\r",
+											"utils.idNumberControl(id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{apiUrl}}{{token}}/tables/columns/store?display_name=Json* Kolon&name=column_jsonb&column_db_type_id={{columnDbTypes_jsonb_Id}}&column_gui_type_id={{columnGuiTypes_jsonb_Id}}&srid&up_column_id&column_table_relation_id&subscriber_ids=[]&column_validation_ids=[\"{{columnValidation_required_Id}}\",\"{{columnValidation_json_Id}}\"]&column_gui_trigger_ids=[]&column_collective_info_id&default&e_sign_pattern_c&column_info&description&state=1&column_set_id={{columnsTableColumnCreateSetId}}&id=0",
+									"host": [
+										"{{apiUrl}}{{token}}"
+									],
+									"path": [
+										"tables",
+										"columns",
+										"store"
+									],
+									"query": [
+										{
+											"key": "display_name",
+											"value": "Json* Kolon"
+										},
+										{
+											"key": "name",
+											"value": "column_jsonb"
+										},
+										{
+											"key": "column_db_type_id",
+											"value": "{{columnDbTypes_jsonb_Id}}"
+										},
+										{
+											"key": "column_gui_type_id",
+											"value": "{{columnGuiTypes_jsonb_Id}}"
+										},
+										{
+											"key": "srid",
+											"value": null
+										},
+										{
+											"key": "up_column_id",
+											"value": null
+										},
+										{
+											"key": "column_table_relation_id",
+											"value": null
+										},
+										{
+											"key": "subscriber_ids",
+											"value": "[]"
+										},
+										{
+											"key": "column_validation_ids",
+											"value": "[\"{{columnValidation_required_Id}}\",\"{{columnValidation_json_Id}}\"]"
+										},
+										{
+											"key": "column_gui_trigger_ids",
+											"value": "[]"
+										},
+										{
+											"key": "column_collective_info_id",
+											"value": null
+										},
+										{
+											"key": "default",
+											"value": null
+										},
+										{
+											"key": "e_sign_pattern_c",
+											"value": null
+										},
+										{
+											"key": "column_info",
+											"value": null
+										},
+										{
+											"key": "description",
+											"value": null
+										},
+										{
+											"key": "state",
+											"value": "1"
+										},
+										{
+											"key": "column_set_id",
+											"value": "{{columnsTableColumnCreateSetId}}"
+										},
+										{
+											"key": "id",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create String Column",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var data = pm.response.json();\r",
+											"var id = data[\"data\"][\"id\"]\r",
+											"pm.environment.set(\"columnsColStringId\", id);\r",
+											"\r",
+											"const utils = eval(globals.loadUtils);\r",
+											"utils.standartControl();\r",
+											"utils.idNumberControl(id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{apiUrl}}{{token}}/tables/columns/store?display_name=String Kolon&name=column_string&column_db_type_id={{columnDbTypes_string_Id}}&column_gui_type_id={{columnGuiTypes_string_Id}}&srid&up_column_id&column_table_relation_id&subscriber_ids=[]&column_validation_ids=[\"{{columnValidation_required_Id}}\",\"{{columnValidation_min_5_Id}}\"]&column_gui_trigger_ids=[]&column_collective_info_id&default&e_sign_pattern_c&column_info&description&state=1&column_set_id={{columnsTableColumnCreateSetId}}&id=0",
+									"host": [
+										"{{apiUrl}}{{token}}"
+									],
+									"path": [
+										"tables",
+										"columns",
+										"store"
+									],
+									"query": [
+										{
+											"key": "display_name",
+											"value": "String Kolon"
+										},
+										{
+											"key": "name",
+											"value": "column_string"
+										},
+										{
+											"key": "column_db_type_id",
+											"value": "{{columnDbTypes_string_Id}}"
+										},
+										{
+											"key": "column_gui_type_id",
+											"value": "{{columnGuiTypes_string_Id}}"
+										},
+										{
+											"key": "srid",
+											"value": null
+										},
+										{
+											"key": "up_column_id",
+											"value": null
+										},
+										{
+											"key": "column_table_relation_id",
+											"value": null
+										},
+										{
+											"key": "subscriber_ids",
+											"value": "[]"
+										},
+										{
+											"key": "column_validation_ids",
+											"value": "[\"{{columnValidation_required_Id}}\",\"{{columnValidation_min_5_Id}}\"]"
+										},
+										{
+											"key": "column_gui_trigger_ids",
+											"value": "[]"
+										},
+										{
+											"key": "column_collective_info_id",
+											"value": null
+										},
+										{
+											"key": "default",
+											"value": null
+										},
+										{
+											"key": "e_sign_pattern_c",
+											"value": null
+										},
+										{
+											"key": "column_info",
+											"value": null
+										},
+										{
+											"key": "description",
+											"value": null
+										},
+										{
+											"key": "state",
+											"value": "1"
+										},
+										{
+											"key": "column_set_id",
+											"value": "{{columnsTableColumnCreateSetId}}"
+										},
+										{
+											"key": "id",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Text Column",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var data = pm.response.json();\r",
+											"var id = data[\"data\"][\"id\"]\r",
+											"pm.environment.set(\"columnsColTextId\", id);\r",
+											"\r",
+											"const utils = eval(globals.loadUtils);\r",
+											"utils.standartControl();\r",
+											"utils.idNumberControl(id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{apiUrl}}{{token}}/tables/columns/store?display_name=Text Kolon&name=column_text&column_db_type_id={{columnDbTypes_text_Id}}&column_gui_type_id={{columnGuiTypes_text_Id}}&srid&up_column_id&column_table_relation_id&subscriber_ids=[]&column_validation_ids=[\"{{columnValidation_required_Id}}\",\"{{columnValidation_min_5_Id}}\"]&column_gui_trigger_ids=[]&column_collective_info_id&default&e_sign_pattern_c&column_info&description&state=1&column_set_id={{columnsTableColumnCreateSetId}}&id=0",
+									"host": [
+										"{{apiUrl}}{{token}}"
+									],
+									"path": [
+										"tables",
+										"columns",
+										"store"
+									],
+									"query": [
+										{
+											"key": "display_name",
+											"value": "Text Kolon"
+										},
+										{
+											"key": "name",
+											"value": "column_text"
+										},
+										{
+											"key": "column_db_type_id",
+											"value": "{{columnDbTypes_text_Id}}"
+										},
+										{
+											"key": "column_gui_type_id",
+											"value": "{{columnGuiTypes_text_Id}}"
+										},
+										{
+											"key": "srid",
+											"value": null
+										},
+										{
+											"key": "up_column_id",
+											"value": null
+										},
+										{
+											"key": "column_table_relation_id",
+											"value": null
+										},
+										{
+											"key": "subscriber_ids",
+											"value": "[]"
+										},
+										{
+											"key": "column_validation_ids",
+											"value": "[\"{{columnValidation_required_Id}}\",\"{{columnValidation_min_5_Id}}\"]"
+										},
+										{
+											"key": "column_gui_trigger_ids",
+											"value": "[]"
+										},
+										{
+											"key": "column_collective_info_id",
+											"value": null
+										},
+										{
+											"key": "default",
+											"value": null
+										},
+										{
+											"key": "e_sign_pattern_c",
+											"value": null
+										},
+										{
+											"key": "column_info",
+											"value": null
+										},
+										{
+											"key": "description",
+											"value": null
+										},
+										{
+											"key": "state",
+											"value": "1"
+										},
+										{
+											"key": "column_set_id",
+											"value": "{{columnsTableColumnCreateSetId}}"
+										},
+										{
+											"key": "id",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Int Column",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var data = pm.response.json();\r",
+											"var id = data[\"data\"][\"id\"]\r",
+											"pm.environment.set(\"columnsColIntId\", id);\r",
+											"\r",
+											"const utils = eval(globals.loadUtils);\r",
+											"utils.standartControl();\r",
+											"utils.idNumberControl(id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{apiUrl}}{{token}}/tables/columns/store?display_name=Tamsayı Kolon&name=column_int&column_db_type_id={{columnDbTypes_integer_Id}}&column_gui_type_id={{columnGuiTypes_numeric_Id}}&srid&up_column_id&column_table_relation_id&subscriber_ids=[]&column_validation_ids=[\"{{columnValidation_required_Id}}\",\"{{columnValidation_numeric_Id}}\",\"{{columnValidation_numeric_min_1_Id}}\"]&column_gui_trigger_ids=[]&column_collective_info_id&default&e_sign_pattern_c&column_info&description&state=1&column_set_id={{columnsTableColumnCreateSetId}}&id=0",
+									"host": [
+										"{{apiUrl}}{{token}}"
+									],
+									"path": [
+										"tables",
+										"columns",
+										"store"
+									],
+									"query": [
+										{
+											"key": "display_name",
+											"value": "Tamsayı Kolon"
+										},
+										{
+											"key": "name",
+											"value": "column_int"
+										},
+										{
+											"key": "column_db_type_id",
+											"value": "{{columnDbTypes_integer_Id}}"
+										},
+										{
+											"key": "column_gui_type_id",
+											"value": "{{columnGuiTypes_numeric_Id}}"
+										},
+										{
+											"key": "srid",
+											"value": null
+										},
+										{
+											"key": "up_column_id",
+											"value": null
+										},
+										{
+											"key": "column_table_relation_id",
+											"value": null
+										},
+										{
+											"key": "subscriber_ids",
+											"value": "[]"
+										},
+										{
+											"key": "column_validation_ids",
+											"value": "[\"{{columnValidation_required_Id}}\",\"{{columnValidation_numeric_Id}}\",\"{{columnValidation_numeric_min_1_Id}}\"]"
+										},
+										{
+											"key": "column_gui_trigger_ids",
+											"value": "[]"
+										},
+										{
+											"key": "column_collective_info_id",
+											"value": null
+										},
+										{
+											"key": "default",
+											"value": null
+										},
+										{
+											"key": "e_sign_pattern_c",
+											"value": null
+										},
+										{
+											"key": "column_info",
+											"value": null
+										},
+										{
+											"key": "description",
+											"value": null
+										},
+										{
+											"key": "state",
+											"value": "1"
+										},
+										{
+											"key": "column_set_id",
+											"value": "{{columnsTableColumnCreateSetId}}"
+										},
+										{
+											"key": "id",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Float Column",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var data = pm.response.json();\r",
+											"var id = data[\"data\"][\"id\"]\r",
+											"pm.environment.set(\"columnsColFloatId\", id);\r",
+											"\r",
+											"const utils = eval(globals.loadUtils);\r",
+											"utils.standartControl();\r",
+											"utils.idNumberControl(id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{apiUrl}}{{token}}/tables/columns/store?display_name=Virgüllü Sayı Kolon&name=column_float&column_db_type_id={{columnDbTypes_float_Id}}&column_gui_type_id={{columnGuiTypes_numeric_Id}}&srid&up_column_id&column_table_relation_id&subscriber_ids=[]&column_validation_ids=[\"{{columnValidation_required_Id}}\",\"{{columnValidation_numeric_Id}}\",\"{{columnValidation_numeric_min_1_Id}}\"]&column_gui_trigger_ids=[]&column_collective_info_id&default&e_sign_pattern_c&column_info&description&state=1&column_set_id={{columnsTableColumnCreateSetId}}&id=0",
+									"host": [
+										"{{apiUrl}}{{token}}"
+									],
+									"path": [
+										"tables",
+										"columns",
+										"store"
+									],
+									"query": [
+										{
+											"key": "display_name",
+											"value": "Virgüllü Sayı Kolon"
+										},
+										{
+											"key": "name",
+											"value": "column_float"
+										},
+										{
+											"key": "column_db_type_id",
+											"value": "{{columnDbTypes_float_Id}}"
+										},
+										{
+											"key": "column_gui_type_id",
+											"value": "{{columnGuiTypes_numeric_Id}}"
+										},
+										{
+											"key": "srid",
+											"value": null
+										},
+										{
+											"key": "up_column_id",
+											"value": null
+										},
+										{
+											"key": "column_table_relation_id",
+											"value": null
+										},
+										{
+											"key": "subscriber_ids",
+											"value": "[]"
+										},
+										{
+											"key": "column_validation_ids",
+											"value": "[\"{{columnValidation_required_Id}}\",\"{{columnValidation_numeric_Id}}\",\"{{columnValidation_numeric_min_1_Id}}\"]"
+										},
+										{
+											"key": "column_gui_trigger_ids",
+											"value": "[]"
+										},
+										{
+											"key": "column_collective_info_id",
+											"value": null
+										},
+										{
+											"key": "default",
+											"value": null
+										},
+										{
+											"key": "e_sign_pattern_c",
+											"value": null
+										},
+										{
+											"key": "column_info",
+											"value": null
+										},
+										{
+											"key": "description",
+											"value": null
+										},
+										{
+											"key": "state",
+											"value": "1"
+										},
+										{
+											"key": "column_set_id",
+											"value": "{{columnsTableColumnCreateSetId}}"
+										},
+										{
+											"key": "id",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Boolean Column",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var data = pm.response.json();\r",
+											"var id = data[\"data\"][\"id\"]\r",
+											"pm.environment.set(\"columnsColBooleanId\", id);\r",
+											"\r",
+											"const utils = eval(globals.loadUtils);\r",
+											"utils.standartControl();\r",
+											"utils.idNumberControl(id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{apiUrl}}{{token}}/tables/columns/store?display_name=Mantıksal Kolon&name=column_boolean&column_db_type_id={{columnDbTypes_boolean_Id}}&column_gui_type_id={{columnGuiTypes_boolean_Id}}&srid&up_column_id&column_table_relation_id&subscriber_ids=[]&column_validation_ids=[\"{{columnValidation_required_Id}}\",\"{{columnValidation_boolean_Id}}\"]&column_gui_trigger_ids=[]&column_collective_info_id&default&e_sign_pattern_c&column_info&description&state=1&column_set_id={{columnsTableColumnCreateSetId}}&id=0",
+									"host": [
+										"{{apiUrl}}{{token}}"
+									],
+									"path": [
+										"tables",
+										"columns",
+										"store"
+									],
+									"query": [
+										{
+											"key": "display_name",
+											"value": "Mantıksal Kolon"
+										},
+										{
+											"key": "name",
+											"value": "column_boolean"
+										},
+										{
+											"key": "column_db_type_id",
+											"value": "{{columnDbTypes_boolean_Id}}"
+										},
+										{
+											"key": "column_gui_type_id",
+											"value": "{{columnGuiTypes_boolean_Id}}"
+										},
+										{
+											"key": "srid",
+											"value": null
+										},
+										{
+											"key": "up_column_id",
+											"value": null
+										},
+										{
+											"key": "column_table_relation_id",
+											"value": null
+										},
+										{
+											"key": "subscriber_ids",
+											"value": "[]"
+										},
+										{
+											"key": "column_validation_ids",
+											"value": "[\"{{columnValidation_required_Id}}\",\"{{columnValidation_boolean_Id}}\"]"
+										},
+										{
+											"key": "column_gui_trigger_ids",
+											"value": "[]"
+										},
+										{
+											"key": "column_collective_info_id",
+											"value": null
+										},
+										{
+											"key": "default",
+											"value": null
+										},
+										{
+											"key": "e_sign_pattern_c",
+											"value": null
+										},
+										{
+											"key": "column_info",
+											"value": null
+										},
+										{
+											"key": "description",
+											"value": null
+										},
+										{
+											"key": "state",
+											"value": "1"
+										},
+										{
+											"key": "column_set_id",
+											"value": "{{columnsTableColumnCreateSetId}}"
+										},
+										{
+											"key": "id",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Date Column",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var data = pm.response.json();\r",
+											"var id = data[\"data\"][\"id\"]\r",
+											"pm.environment.set(\"columnsColDateId\", id);\r",
+											"\r",
+											"const utils = eval(globals.loadUtils);\r",
+											"utils.standartControl();\r",
+											"utils.idNumberControl(id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{apiUrl}}{{token}}/tables/columns/store?display_name=Tarih Kolon&name=column_date&column_db_type_id={{columnDbTypes_date_Id}}&column_gui_type_id={{columnGuiTypes_date_Id}}&srid&up_column_id&column_table_relation_id&subscriber_ids=[]&column_validation_ids=[\"{{columnValidation_required_Id}}\",\"{{columnValidation_date_format__Y_m_d__Id}}\"]&column_gui_trigger_ids=[]&column_collective_info_id&default&e_sign_pattern_c&column_info&description&state=1&column_set_id={{columnsTableColumnCreateSetId}}&id=0",
+									"host": [
+										"{{apiUrl}}{{token}}"
+									],
+									"path": [
+										"tables",
+										"columns",
+										"store"
+									],
+									"query": [
+										{
+											"key": "display_name",
+											"value": "Tarih Kolon"
+										},
+										{
+											"key": "name",
+											"value": "column_date"
+										},
+										{
+											"key": "column_db_type_id",
+											"value": "{{columnDbTypes_date_Id}}"
+										},
+										{
+											"key": "column_gui_type_id",
+											"value": "{{columnGuiTypes_date_Id}}"
+										},
+										{
+											"key": "srid",
+											"value": null
+										},
+										{
+											"key": "up_column_id",
+											"value": null
+										},
+										{
+											"key": "column_table_relation_id",
+											"value": null
+										},
+										{
+											"key": "subscriber_ids",
+											"value": "[]"
+										},
+										{
+											"key": "column_validation_ids",
+											"value": "[\"{{columnValidation_required_Id}}\",\"{{columnValidation_date_format__Y_m_d__Id}}\"]"
+										},
+										{
+											"key": "column_gui_trigger_ids",
+											"value": "[]"
+										},
+										{
+											"key": "column_collective_info_id",
+											"value": null
+										},
+										{
+											"key": "default",
+											"value": null
+										},
+										{
+											"key": "e_sign_pattern_c",
+											"value": null
+										},
+										{
+											"key": "column_info",
+											"value": null
+										},
+										{
+											"key": "description",
+											"value": null
+										},
+										{
+											"key": "state",
+											"value": "1"
+										},
+										{
+											"key": "column_set_id",
+											"value": "{{columnsTableColumnCreateSetId}}"
+										},
+										{
+											"key": "id",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Time Column",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var data = pm.response.json();\r",
+											"var id = data[\"data\"][\"id\"]\r",
+											"pm.environment.set(\"columnsColTimeId\", id);\r",
+											"\r",
+											"const utils = eval(globals.loadUtils);\r",
+											"utils.standartControl();\r",
+											"utils.idNumberControl(id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{apiUrl}}{{token}}/tables/columns/store?display_name=Saat Kolon&name=column_time&column_db_type_id={{columnDbTypes_time_Id}}&column_gui_type_id={{columnGuiTypes_time_Id}}&srid&up_column_id&column_table_relation_id&subscriber_ids=[]&column_validation_ids=[\"{{columnValidation_required_Id}}\",\"{{columnValidation_date_format__H_i_s__Id}}\"]&column_gui_trigger_ids=[]&column_collective_info_id&default&e_sign_pattern_c&column_info&description&state=1&column_set_id={{columnsTableColumnCreateSetId}}&id=0",
+									"host": [
+										"{{apiUrl}}{{token}}"
+									],
+									"path": [
+										"tables",
+										"columns",
+										"store"
+									],
+									"query": [
+										{
+											"key": "display_name",
+											"value": "Saat Kolon"
+										},
+										{
+											"key": "name",
+											"value": "column_time"
+										},
+										{
+											"key": "column_db_type_id",
+											"value": "{{columnDbTypes_time_Id}}"
+										},
+										{
+											"key": "column_gui_type_id",
+											"value": "{{columnGuiTypes_time_Id}}"
+										},
+										{
+											"key": "srid",
+											"value": null
+										},
+										{
+											"key": "up_column_id",
+											"value": null
+										},
+										{
+											"key": "column_table_relation_id",
+											"value": null
+										},
+										{
+											"key": "subscriber_ids",
+											"value": "[]"
+										},
+										{
+											"key": "column_validation_ids",
+											"value": "[\"{{columnValidation_required_Id}}\",\"{{columnValidation_date_format__H_i_s__Id}}\"]"
+										},
+										{
+											"key": "column_gui_trigger_ids",
+											"value": "[]"
+										},
+										{
+											"key": "column_collective_info_id",
+											"value": null
+										},
+										{
+											"key": "default",
+											"value": null
+										},
+										{
+											"key": "e_sign_pattern_c",
+											"value": null
+										},
+										{
+											"key": "column_info",
+											"value": null
+										},
+										{
+											"key": "description",
+											"value": null
+										},
+										{
+											"key": "state",
+											"value": "1"
+										},
+										{
+											"key": "column_set_id",
+											"value": "{{columnsTableColumnCreateSetId}}"
+										},
+										{
+											"key": "id",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Date Time Column",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var data = pm.response.json();\r",
+											"var id = data[\"data\"][\"id\"]\r",
+											"pm.environment.set(\"columnsColDateTimeId\", id);\r",
+											"\r",
+											"const utils = eval(globals.loadUtils);\r",
+											"utils.standartControl();\r",
+											"utils.idNumberControl(id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{apiUrl}}{{token}}/tables/columns/store?display_name=Tarih Saat Kolon&name=column_date_time&column_db_type_id={{columnDbTypes_datetime_Id}}&column_gui_type_id={{columnGuiTypes_datetime_Id}}&srid&up_column_id&column_table_relation_id&subscriber_ids=[]&column_validation_ids=[\"{{columnValidation_required_Id}}\",\"{{columnValidation_date_format__Y_m_d H_i_s__Id}}\"]&column_gui_trigger_ids=[]&column_collective_info_id&default&e_sign_pattern_c&column_info&description&state=1&column_set_id={{columnsTableColumnCreateSetId}}&id=0",
+									"host": [
+										"{{apiUrl}}{{token}}"
+									],
+									"path": [
+										"tables",
+										"columns",
+										"store"
+									],
+									"query": [
+										{
+											"key": "display_name",
+											"value": "Tarih Saat Kolon"
+										},
+										{
+											"key": "name",
+											"value": "column_date_time"
+										},
+										{
+											"key": "column_db_type_id",
+											"value": "{{columnDbTypes_datetime_Id}}"
+										},
+										{
+											"key": "column_gui_type_id",
+											"value": "{{columnGuiTypes_datetime_Id}}"
+										},
+										{
+											"key": "srid",
+											"value": null
+										},
+										{
+											"key": "up_column_id",
+											"value": null
+										},
+										{
+											"key": "column_table_relation_id",
+											"value": null
+										},
+										{
+											"key": "subscriber_ids",
+											"value": "[]"
+										},
+										{
+											"key": "column_validation_ids",
+											"value": "[\"{{columnValidation_required_Id}}\",\"{{columnValidation_date_format__Y_m_d H_i_s__Id}}\"]"
+										},
+										{
+											"key": "column_gui_trigger_ids",
+											"value": "[]"
+										},
+										{
+											"key": "column_collective_info_id",
+											"value": null
+										},
+										{
+											"key": "default",
+											"value": null
+										},
+										{
+											"key": "e_sign_pattern_c",
+											"value": null
+										},
+										{
+											"key": "column_info",
+											"value": null
+										},
+										{
+											"key": "description",
+											"value": null
+										},
+										{
+											"key": "state",
+											"value": "1"
+										},
+										{
+											"key": "column_set_id",
+											"value": "{{columnsTableColumnCreateSetId}}"
+										},
+										{
+											"key": "id",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Geo Column",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var data = pm.response.json();\r",
+											"var id = data[\"data\"][\"id\"]\r",
+											"pm.environment.set(\"columnsColMultiPolygonId\", id);\r",
+											"\r",
+											"const utils = eval(globals.loadUtils);\r",
+											"utils.standartControl();\r",
+											"utils.idNumberControl(id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{apiUrl}}{{token}}/tables/columns/store?display_name=Coğrafi Kolon&name=column_multipolygon&column_db_type_id={{columnDbTypes_multipolygon_Id}}&column_gui_type_id={{columnGuiTypes_multipolygon_Id}}&srid&up_column_id&column_table_relation_id&subscriber_ids=[]&column_validation_ids=[\"{{columnValidation_required_Id}}\"]&column_gui_trigger_ids=[]&column_collective_info_id&default&e_sign_pattern_c&column_info&description&state=1&column_set_id={{columnsTableColumnCreateSetId}}&id=0",
+									"host": [
+										"{{apiUrl}}{{token}}"
+									],
+									"path": [
+										"tables",
+										"columns",
+										"store"
+									],
+									"query": [
+										{
+											"key": "display_name",
+											"value": "Coğrafi Kolon"
+										},
+										{
+											"key": "name",
+											"value": "column_multipolygon"
+										},
+										{
+											"key": "column_db_type_id",
+											"value": "{{columnDbTypes_multipolygon_Id}}"
+										},
+										{
+											"key": "column_gui_type_id",
+											"value": "{{columnGuiTypes_multipolygon_Id}}"
+										},
+										{
+											"key": "srid",
+											"value": null
+										},
+										{
+											"key": "up_column_id",
+											"value": null
+										},
+										{
+											"key": "column_table_relation_id",
+											"value": null
+										},
+										{
+											"key": "subscriber_ids",
+											"value": "[]"
+										},
+										{
+											"key": "column_validation_ids",
+											"value": "[\"{{columnValidation_required_Id}}\"]"
+										},
+										{
+											"key": "column_gui_trigger_ids",
+											"value": "[]"
+										},
+										{
+											"key": "column_collective_info_id",
+											"value": null
+										},
+										{
+											"key": "default",
+											"value": null
+										},
+										{
+											"key": "e_sign_pattern_c",
+											"value": null
+										},
+										{
+											"key": "column_info",
+											"value": null
+										},
+										{
+											"key": "description",
+											"value": null
+										},
+										{
+											"key": "state",
+											"value": "1"
+										},
+										{
+											"key": "column_set_id",
+											"value": "{{columnsTableColumnCreateSetId}}"
+										},
+										{
+											"key": "id",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Up Column Relation For Simple Up Column",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var data = pm.response.json();\r",
+											"var id = data[\"data\"][\"id\"]\r",
+											"pm.environment.set(\"upColumnIdForSimpleUpColumn\", id);\r",
+											"\r",
+											"const utils = eval(globals.loadUtils);\r",
+											"utils.standartControl();\r",
+											"utils.idNumberControl(id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{apiUrl}}{{token}}/tables/up_columns/store?name_basic=İlçeler kolonu için sadece seçili ilin ilçeleri gelsin.&column_id={{columnsIllerIdId}}&table_ids=[\"{{tablesIlcelerId}}\"]&php_code=<?php\n$temp = DB::table('ilceler')\n            ->where('iller_id', (int)$data)\n            ->pluck('id');\n$return = [];\nforeach($temp as $item) array_push($return, $item);\n?>&description&state=1&column_set_id={{upColumnsTableColumnCreateSetId}}&id=0",
+									"host": [
+										"{{apiUrl}}{{token}}"
+									],
+									"path": [
+										"tables",
+										"up_columns",
+										"store"
+									],
+									"query": [
+										{
+											"key": "name_basic",
+											"value": "İlçeler kolonu için sadece seçili ilin ilçeleri gelsin."
+										},
+										{
+											"key": "column_id",
+											"value": "{{columnsIllerIdId}}"
+										},
+										{
+											"key": "table_ids",
+											"value": "[\"{{tablesIlcelerId}}\"]"
+										},
+										{
+											"key": "php_code",
+											"value": "<?php\n$temp = DB::table('ilceler')\n            ->where('iller_id', (int)$data)\n            ->pluck('id');\n$return = [];\nforeach($temp as $item) array_push($return, $item);\n?>"
+										},
+										{
+											"key": "description",
+											"value": null
+										},
+										{
+											"key": "state",
+											"value": "1"
+										},
+										{
+											"key": "column_set_id",
+											"value": "{{upColumnsTableColumnCreateSetId}}"
+										},
+										{
+											"key": "id",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Column Relation For Simple Up Column",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var data = pm.response.json();\r",
+											"var id = data[\"data\"][\"id\"]\r",
+											"pm.environment.set(\"relationIdForSimpleUpColumn\", id);\r",
+											"\r",
+											"const utils = eval(globals.loadUtils);\r",
+											"utils.standartControl();\r",
+											"utils.idNumberControl(id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{apiUrl}}{{token}}/tables/column_table_relations/store?name_basic=Üst kolon için ilçeler tablosu ilişkisi&relation_table_id={{tablesIlcelerId}}&relation_source_column_id={{columnsIdId}}&relation_display_column_id={{columnsNameBasicId}}&join_table_ids=[]&relation_sql&relation_source_column&relation_display_column&column_data_source_id&description&state=1&column_set_id={{columnTableRelationsTableColumnCreateSetId}}&id=0",
+									"host": [
+										"{{apiUrl}}{{token}}"
+									],
+									"path": [
+										"tables",
+										"column_table_relations",
+										"store"
+									],
+									"query": [
+										{
+											"key": "name_basic",
+											"value": "Üst kolon için ilçeler tablosu ilişkisi"
+										},
+										{
+											"key": "relation_table_id",
+											"value": "{{tablesIlcelerId}}"
+										},
+										{
+											"key": "relation_source_column_id",
+											"value": "{{columnsIdId}}"
+										},
+										{
+											"key": "relation_display_column_id",
+											"value": "{{columnsNameBasicId}}"
+										},
+										{
+											"key": "join_table_ids",
+											"value": "[]"
+										},
+										{
+											"key": "relation_sql",
+											"value": null
+										},
+										{
+											"key": "relation_source_column",
+											"value": null
+										},
+										{
+											"key": "relation_display_column",
+											"value": null
+										},
+										{
+											"key": "column_data_source_id",
+											"value": null
+										},
+										{
+											"key": "description",
+											"value": null
+										},
+										{
+											"key": "state",
+											"value": "1"
+										},
+										{
+											"key": "column_set_id",
+											"value": "{{columnTableRelationsTableColumnCreateSetId}}"
+										},
+										{
+											"key": "id",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Simple Up Column Column",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var data = pm.response.json();\r",
+											"var id = data[\"data\"][\"id\"]\r",
+											"pm.environment.set(\"columnsColSimpleUpColumnId\", id);\r",
+											"\r",
+											"const utils = eval(globals.loadUtils);\r",
+											"utils.standartControl();\r",
+											"utils.idNumberControl(id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{apiUrl}}{{token}}/tables/columns/store?display_name=Örnek Üst Kolon&name=column_simple_up_column&column_db_type_id={{columnDbTypes_integer_Id}}&column_gui_type_id={{columnGuiTypes_select_Id}}&srid&up_column_id={{upColumnIdForSimpleUpColumn}}&column_table_relation_id={{relationIdForSimpleUpColumn}}&subscriber_ids=[]&column_validation_ids=[\"{{columnValidation_required_Id}}\", \"{{columnValidation_numeric_min_1_Id}}\"]&column_gui_trigger_ids=[]&column_collective_info_id&default&e_sign_pattern_c&column_info&description&state=1&column_set_id={{columnsTableColumnCreateSetId}}&id=0",
+									"host": [
+										"{{apiUrl}}{{token}}"
+									],
+									"path": [
+										"tables",
+										"columns",
+										"store"
+									],
+									"query": [
+										{
+											"key": "display_name",
+											"value": "Örnek Üst Kolon"
+										},
+										{
+											"key": "name",
+											"value": "column_simple_up_column"
+										},
+										{
+											"key": "column_db_type_id",
+											"value": "{{columnDbTypes_integer_Id}}"
+										},
+										{
+											"key": "column_gui_type_id",
+											"value": "{{columnGuiTypes_select_Id}}"
+										},
+										{
+											"key": "srid",
+											"value": null
+										},
+										{
+											"key": "up_column_id",
+											"value": "{{upColumnIdForSimpleUpColumn}}"
+										},
+										{
+											"key": "column_table_relation_id",
+											"value": "{{relationIdForSimpleUpColumn}}"
+										},
+										{
+											"key": "subscriber_ids",
+											"value": "[]"
+										},
+										{
+											"key": "column_validation_ids",
+											"value": "[\"{{columnValidation_required_Id}}\", \"{{columnValidation_numeric_min_1_Id}}\"]"
+										},
+										{
+											"key": "column_gui_trigger_ids",
+											"value": "[]"
+										},
+										{
+											"key": "column_collective_info_id",
+											"value": null
+										},
+										{
+											"key": "default",
+											"value": null
+										},
+										{
+											"key": "e_sign_pattern_c",
+											"value": null
+										},
+										{
+											"key": "column_info",
+											"value": null
+										},
+										{
+											"key": "description",
+											"value": null
+										},
+										{
+											"key": "state",
+											"value": "1"
+										},
+										{
+											"key": "column_set_id",
+											"value": "{{columnsTableColumnCreateSetId}}"
+										},
+										{
+											"key": "id",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Column Relation With table_id and colname",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var data = pm.response.json();\r",
+											"var id = data[\"data\"][\"id\"]\r",
+											"pm.environment.set(\"relationIdForRelationColumn1\", id);\r",
+											"\r",
+											"const utils = eval(globals.loadUtils);\r",
+											"utils.standartControl();\r",
+											"utils.idNumberControl(id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{apiUrl}}{{token}}/tables/column_table_relations/store?name_basic=İlişkili kolon için ilçeler tablosu ilişkisi (table_id ve colname ile)&relation_table_id={{tablesIlcelerId}}&relation_source_column_id=&relation_display_column_id=&join_table_ids=[]&relation_sql&relation_source_column=id&relation_display_column=\"name_basic\"&column_data_source_id&description&state=1&column_set_id={{columnTableRelationsTableColumnCreateSetId}}&id=0",
+									"host": [
+										"{{apiUrl}}{{token}}"
+									],
+									"path": [
+										"tables",
+										"column_table_relations",
+										"store"
+									],
+									"query": [
+										{
+											"key": "name_basic",
+											"value": "İlişkili kolon için ilçeler tablosu ilişkisi (table_id ve colname ile)"
+										},
+										{
+											"key": "relation_table_id",
+											"value": "{{tablesIlcelerId}}"
+										},
+										{
+											"key": "relation_source_column_id",
+											"value": ""
+										},
+										{
+											"key": "relation_display_column_id",
+											"value": ""
+										},
+										{
+											"key": "join_table_ids",
+											"value": "[]"
+										},
+										{
+											"key": "relation_sql",
+											"value": null
+										},
+										{
+											"key": "relation_source_column",
+											"value": "id"
+										},
+										{
+											"key": "relation_display_column",
+											"value": "\"name_basic\""
+										},
+										{
+											"key": "column_data_source_id",
+											"value": null
+										},
+										{
+											"key": "description",
+											"value": null
+										},
+										{
+											"key": "state",
+											"value": "1"
+										},
+										{
+											"key": "column_set_id",
+											"value": "{{columnTableRelationsTableColumnCreateSetId}}"
+										},
+										{
+											"key": "id",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Simple Relation Column With table_id and colname",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var data = pm.response.json();\r",
+											"var id = data[\"data\"][\"id\"]\r",
+											"pm.environment.set(\"columnsColRelation1Id\", id);\r",
+											"\r",
+											"const utils = eval(globals.loadUtils);\r",
+											"utils.standartControl();\r",
+											"utils.idNumberControl(id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{apiUrl}}{{token}}/tables/columns/store?display_name=Örnek İkişkili Kolon  (table_id ve colname ile)&name=column_relation1&column_db_type_id={{columnDbTypes_integer_Id}}&column_gui_type_id={{columnGuiTypes_select_Id}}&srid&up_column_id=&column_table_relation_id={{relationIdForRelationColumn1}}&subscriber_ids=[]&column_validation_ids=[\"{{columnValidation_required_Id}}\", \"{{columnValidation_numeric_min_1_Id}}\"]&column_gui_trigger_ids=[]&column_collective_info_id&default&e_sign_pattern_c&column_info&description&state=1&column_set_id={{columnsTableColumnCreateSetId}}&id=0",
+									"host": [
+										"{{apiUrl}}{{token}}"
+									],
+									"path": [
+										"tables",
+										"columns",
+										"store"
+									],
+									"query": [
+										{
+											"key": "display_name",
+											"value": "Örnek İkişkili Kolon  (table_id ve colname ile)"
+										},
+										{
+											"key": "name",
+											"value": "column_relation1"
+										},
+										{
+											"key": "column_db_type_id",
+											"value": "{{columnDbTypes_integer_Id}}"
+										},
+										{
+											"key": "column_gui_type_id",
+											"value": "{{columnGuiTypes_select_Id}}"
+										},
+										{
+											"key": "srid",
+											"value": null
+										},
+										{
+											"key": "up_column_id",
+											"value": ""
+										},
+										{
+											"key": "column_table_relation_id",
+											"value": "{{relationIdForRelationColumn1}}"
+										},
+										{
+											"key": "subscriber_ids",
+											"value": "[]"
+										},
+										{
+											"key": "column_validation_ids",
+											"value": "[\"{{columnValidation_required_Id}}\", \"{{columnValidation_numeric_min_1_Id}}\"]"
+										},
+										{
+											"key": "column_gui_trigger_ids",
+											"value": "[]"
+										},
+										{
+											"key": "column_collective_info_id",
+											"value": null
+										},
+										{
+											"key": "default",
+											"value": null
+										},
+										{
+											"key": "e_sign_pattern_c",
+											"value": null
+										},
+										{
+											"key": "column_info",
+											"value": null
+										},
+										{
+											"key": "description",
+											"value": null
+										},
+										{
+											"key": "state",
+											"value": "1"
+										},
+										{
+											"key": "column_set_id",
+											"value": "{{columnsTableColumnCreateSetId}}"
+										},
+										{
+											"key": "id",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Column Relation With sql",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var data = pm.response.json();\r",
+											"var id = data[\"data\"][\"id\"]\r",
+											"pm.environment.set(\"relationIdForRelationColumn2\", id);\r",
+											"\r",
+											"const utils = eval(globals.loadUtils);\r",
+											"utils.standartControl();\r",
+											"utils.idNumberControl(id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{apiUrl}}{{token}}/tables/column_table_relations/store?name_basic=İlişkili kolon için ilçeler tablosu ilişkisi (sql ile)&relation_table_id=&relation_source_column_id=&relation_display_column_id=&join_table_ids=[]&relation_sql=select * from ilceler&relation_source_column=id&relation_display_column=name_basic&column_data_source_id&description&state=1&column_set_id={{columnTableRelationsTableColumnCreateSetId}}&id=0",
+									"host": [
+										"{{apiUrl}}{{token}}"
+									],
+									"path": [
+										"tables",
+										"column_table_relations",
+										"store"
+									],
+									"query": [
+										{
+											"key": "name_basic",
+											"value": "İlişkili kolon için ilçeler tablosu ilişkisi (sql ile)"
+										},
+										{
+											"key": "relation_table_id",
+											"value": ""
+										},
+										{
+											"key": "relation_source_column_id",
+											"value": ""
+										},
+										{
+											"key": "relation_display_column_id",
+											"value": ""
+										},
+										{
+											"key": "join_table_ids",
+											"value": "[]"
+										},
+										{
+											"key": "relation_sql",
+											"value": "select * from ilceler"
+										},
+										{
+											"key": "relation_source_column",
+											"value": "id"
+										},
+										{
+											"key": "relation_display_column",
+											"value": "name_basic"
+										},
+										{
+											"key": "column_data_source_id",
+											"value": null
+										},
+										{
+											"key": "description",
+											"value": null
+										},
+										{
+											"key": "state",
+											"value": "1"
+										},
+										{
+											"key": "column_set_id",
+											"value": "{{columnTableRelationsTableColumnCreateSetId}}"
+										},
+										{
+											"key": "id",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Simple Relation Column With Sql",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var data = pm.response.json();\r",
+											"var id = data[\"data\"][\"id\"]\r",
+											"pm.environment.set(\"columnsColRelation2Id\", id);\r",
+											"\r",
+											"const utils = eval(globals.loadUtils);\r",
+											"utils.standartControl();\r",
+											"utils.idNumberControl(id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{apiUrl}}{{token}}/tables/columns/store?display_name=Örnek İkişkili Kolon (sql ile)&name=column_relation2&column_db_type_id={{columnDbTypes_integer_Id}}&column_gui_type_id={{columnGuiTypes_select_Id}}&srid&up_column_id=&column_table_relation_id={{relationIdForRelationColumn2}}&subscriber_ids=[]&column_validation_ids=[\"{{columnValidation_required_Id}}\", \"{{columnValidation_numeric_min_1_Id}}\"]&column_gui_trigger_ids=[]&column_collective_info_id&default&e_sign_pattern_c&column_info&description&state=1&column_set_id={{columnsTableColumnCreateSetId}}&id=0",
+									"host": [
+										"{{apiUrl}}{{token}}"
+									],
+									"path": [
+										"tables",
+										"columns",
+										"store"
+									],
+									"query": [
+										{
+											"key": "display_name",
+											"value": "Örnek İkişkili Kolon (sql ile)"
+										},
+										{
+											"key": "name",
+											"value": "column_relation2"
+										},
+										{
+											"key": "column_db_type_id",
+											"value": "{{columnDbTypes_integer_Id}}"
+										},
+										{
+											"key": "column_gui_type_id",
+											"value": "{{columnGuiTypes_select_Id}}"
+										},
+										{
+											"key": "srid",
+											"value": null
+										},
+										{
+											"key": "up_column_id",
+											"value": ""
+										},
+										{
+											"key": "column_table_relation_id",
+											"value": "{{relationIdForRelationColumn2}}"
+										},
+										{
+											"key": "subscriber_ids",
+											"value": "[]"
+										},
+										{
+											"key": "column_validation_ids",
+											"value": "[\"{{columnValidation_required_Id}}\", \"{{columnValidation_numeric_min_1_Id}}\"]"
+										},
+										{
+											"key": "column_gui_trigger_ids",
+											"value": "[]"
+										},
+										{
+											"key": "column_collective_info_id",
+											"value": null
+										},
+										{
+											"key": "default",
+											"value": null
+										},
+										{
+											"key": "e_sign_pattern_c",
+											"value": null
+										},
+										{
+											"key": "column_info",
+											"value": null
+										},
+										{
+											"key": "description",
+											"value": null
+										},
+										{
+											"key": "state",
+											"value": "1"
+										},
+										{
+											"key": "column_set_id",
+											"value": "{{columnsTableColumnCreateSetId}}"
+										},
+										{
+											"key": "id",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Join For Column Relation 1",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var data = pm.response.json();\r",
+											"var id = data[\"data\"][\"id\"]\r",
+											"pm.environment.set(\"join1IdForRelationColumn3\", id);\r",
+											"\r",
+											"const utils = eval(globals.loadUtils);\r",
+											"utils.standartControl();\r",
+											"utils.idNumberControl(id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{apiUrl}}{{token}}/tables/join_tables/store?name_basic=column_relation3 kolonu ve ilceler tablosu bağlantısı&join_table_id={{tablesIlcelerId}}&join_table_alias=ilcesi&connection_column_with_alias=column_relation3&join_column_id={{columnsIdId}}&description&state=1&column_set_id={{joinTablesTableColumnCreateSetId}}&id=0",
+									"host": [
+										"{{apiUrl}}{{token}}"
+									],
+									"path": [
+										"tables",
+										"join_tables",
+										"store"
+									],
+									"query": [
+										{
+											"key": "name_basic",
+											"value": "column_relation3 kolonu ve ilceler tablosu bağlantısı"
+										},
+										{
+											"key": "join_table_id",
+											"value": "{{tablesIlcelerId}}"
+										},
+										{
+											"key": "join_table_alias",
+											"value": "ilcesi"
+										},
+										{
+											"key": "connection_column_with_alias",
+											"value": "column_relation3"
+										},
+										{
+											"key": "join_column_id",
+											"value": "{{columnsIdId}}"
+										},
+										{
+											"key": "description",
+											"value": null
+										},
+										{
+											"key": "state",
+											"value": "1"
+										},
+										{
+											"key": "column_set_id",
+											"value": "{{joinTablesTableColumnCreateSetId}}"
+										},
+										{
+											"key": "id",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Join For Column Relation 2",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var data = pm.response.json();\r",
+											"var id = data[\"data\"][\"id\"]\r",
+											"pm.environment.set(\"join2IdForRelationColumn3\", id);\r",
+											"\r",
+											"const utils = eval(globals.loadUtils);\r",
+											"utils.standartControl();\r",
+											"utils.idNumberControl(id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{apiUrl}}{{token}}/tables/join_tables/store?name_basic=iller_id kolonu üzerinden iller tablosu bağlantısı&join_table_id={{tablesIllerId}}&join_table_alias=ili&connection_column_with_alias=ilcesi.iller_id&join_column_id={{columnsIdId}}&description&state=1&column_set_id={{joinTablesTableColumnCreateSetId}}&id=0",
+									"host": [
+										"{{apiUrl}}{{token}}"
+									],
+									"path": [
+										"tables",
+										"join_tables",
+										"store"
+									],
+									"query": [
+										{
+											"key": "name_basic",
+											"value": "iller_id kolonu üzerinden iller tablosu bağlantısı"
+										},
+										{
+											"key": "join_table_id",
+											"value": "{{tablesIllerId}}"
+										},
+										{
+											"key": "join_table_alias",
+											"value": "ili"
+										},
+										{
+											"key": "connection_column_with_alias",
+											"value": "ilcesi.iller_id"
+										},
+										{
+											"key": "join_column_id",
+											"value": "{{columnsIdId}}"
+										},
+										{
+											"key": "description",
+											"value": null
+										},
+										{
+											"key": "state",
+											"value": "1"
+										},
+										{
+											"key": "column_set_id",
+											"value": "{{joinTablesTableColumnCreateSetId}}"
+										},
+										{
+											"key": "id",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Column Relation With table_id and colname via join",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var data = pm.response.json();\r",
+											"var id = data[\"data\"][\"id\"]\r",
+											"pm.environment.set(\"relationIdForRelationColumn3\", id);\r",
+											"\r",
+											"const utils = eval(globals.loadUtils);\r",
+											"utils.standartControl();\r",
+											"utils.idNumberControl(id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{apiUrl}}{{token}}/tables/column_table_relations/store?name_basic=İlişkili kolon için ilçeler tablosu ilişkisi (table_id ve colname ile join üzerinden)&relation_table_id={{tablesIlcelerId}}&relation_source_column_id=&relation_display_column_id=&join_table_ids=[\"{{join1IdForRelationColumn3}}\", \"{{join2IdForRelationColumn3}}\"]&relation_sql&relation_source_column=id&relation_display_column=ili.name_basic || ' - ' || ilcesi.name_basic&column_data_source_id&description&state=1&column_set_id={{columnTableRelationsTableColumnCreateSetId}}&id=0",
+									"host": [
+										"{{apiUrl}}{{token}}"
+									],
+									"path": [
+										"tables",
+										"column_table_relations",
+										"store"
+									],
+									"query": [
+										{
+											"key": "name_basic",
+											"value": "İlişkili kolon için ilçeler tablosu ilişkisi (table_id ve colname ile join üzerinden)"
+										},
+										{
+											"key": "relation_table_id",
+											"value": "{{tablesIlcelerId}}"
+										},
+										{
+											"key": "relation_source_column_id",
+											"value": ""
+										},
+										{
+											"key": "relation_display_column_id",
+											"value": ""
+										},
+										{
+											"key": "join_table_ids",
+											"value": "[\"{{join1IdForRelationColumn3}}\", \"{{join2IdForRelationColumn3}}\"]"
+										},
+										{
+											"key": "relation_sql",
+											"value": null
+										},
+										{
+											"key": "relation_source_column",
+											"value": "id"
+										},
+										{
+											"key": "relation_display_column",
+											"value": "ili.name_basic || ' - ' || ilcesi.name_basic"
+										},
+										{
+											"key": "column_data_source_id",
+											"value": null
+										},
+										{
+											"key": "description",
+											"value": null
+										},
+										{
+											"key": "state",
+											"value": "1"
+										},
+										{
+											"key": "column_set_id",
+											"value": "{{columnTableRelationsTableColumnCreateSetId}}"
+										},
+										{
+											"key": "id",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Simple Relation Column With table_id and colname via join",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var data = pm.response.json();\r",
+											"var id = data[\"data\"][\"id\"]\r",
+											"pm.environment.set(\"columnsColRelation3Id\", id);\r",
+											"\r",
+											"const utils = eval(globals.loadUtils);\r",
+											"utils.standartControl();\r",
+											"utils.idNumberControl(id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{apiUrl}}{{token}}/tables/columns/store?display_name=Örnek İkişkili Kolon  (table_id ve colname ile join üzerinden)&name=column_relation3&column_db_type_id={{columnDbTypes_integer_Id}}&column_gui_type_id={{columnGuiTypes_select_Id}}&srid&up_column_id=&column_table_relation_id={{relationIdForRelationColumn3}}&subscriber_ids=[]&column_validation_ids=[\"{{columnValidation_required_Id}}\", \"{{columnValidation_numeric_min_1_Id}}\"]&column_gui_trigger_ids=[]&column_collective_info_id&default&e_sign_pattern_c&column_info&description&state=1&column_set_id={{columnsTableColumnCreateSetId}}&id=0",
+									"host": [
+										"{{apiUrl}}{{token}}"
+									],
+									"path": [
+										"tables",
+										"columns",
+										"store"
+									],
+									"query": [
+										{
+											"key": "display_name",
+											"value": "Örnek İkişkili Kolon  (table_id ve colname ile join üzerinden)"
+										},
+										{
+											"key": "name",
+											"value": "column_relation3"
+										},
+										{
+											"key": "column_db_type_id",
+											"value": "{{columnDbTypes_integer_Id}}"
+										},
+										{
+											"key": "column_gui_type_id",
+											"value": "{{columnGuiTypes_select_Id}}"
+										},
+										{
+											"key": "srid",
+											"value": null
+										},
+										{
+											"key": "up_column_id",
+											"value": ""
+										},
+										{
+											"key": "column_table_relation_id",
+											"value": "{{relationIdForRelationColumn3}}"
+										},
+										{
+											"key": "subscriber_ids",
+											"value": "[]"
+										},
+										{
+											"key": "column_validation_ids",
+											"value": "[\"{{columnValidation_required_Id}}\", \"{{columnValidation_numeric_min_1_Id}}\"]"
+										},
+										{
+											"key": "column_gui_trigger_ids",
+											"value": "[]"
+										},
+										{
+											"key": "column_collective_info_id",
+											"value": null
+										},
+										{
+											"key": "default",
+											"value": null
+										},
+										{
+											"key": "e_sign_pattern_c",
+											"value": null
+										},
+										{
+											"key": "column_info",
+											"value": null
+										},
+										{
+											"key": "description",
+											"value": null
+										},
+										{
+											"key": "state",
+											"value": "1"
+										},
+										{
+											"key": "column_set_id",
+											"value": "{{columnsTableColumnCreateSetId}}"
+										},
+										{
+											"key": "id",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Test Data Source For Relation Column",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var data = pm.response.json();\r",
+											"var id = data[\"data\"][\"id\"]\r",
+											"pm.environment.set(\"columnDataSourceIdForRelationColumn4\", id);\r",
+											"\r",
+											"const utils = eval(globals.loadUtils);\r",
+											"utils.standartControl();\r",
+											"utils.idNumberControl(id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{apiUrl}}{{token}}/tables/column_data_sources/store?name=Test veri kaynağı&php_code=<?php $repository = new App\\Repositories\\TestRepository(); ?>&state=1&column_set_id={{columnDataSourcesTableColumnCreateSetId}}&id=0",
+									"host": [
+										"{{apiUrl}}{{token}}"
+									],
+									"path": [
+										"tables",
+										"column_data_sources",
+										"store"
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "Test veri kaynağı"
+										},
+										{
+											"key": "php_code",
+											"value": "<?php $repository = new App\\Repositories\\TestRepository(); ?>"
+										},
+										{
+											"key": "state",
+											"value": "1"
+										},
+										{
+											"key": "column_set_id",
+											"value": "{{columnDataSourcesTableColumnCreateSetId}}"
+										},
+										{
+											"key": "id",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Column Relation With Data Source",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var data = pm.response.json();\r",
+											"var id = data[\"data\"][\"id\"]\r",
+											"pm.environment.set(\"relationIdForRelationColumn4\", id);\r",
+											"\r",
+											"const utils = eval(globals.loadUtils);\r",
+											"utils.standartControl();\r",
+											"utils.idNumberControl(id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{apiUrl}}{{token}}/tables/column_table_relations/store?name_basic=İlişkili kolon için ilişki (veri kaynağı ile)&relation_table_id=&relation_source_column_id=&relation_display_column_id=&join_table_ids=[]&relation_sql&relation_source_column=&relation_display_column=&column_data_source_id={{columnDataSourceIdForRelationColumn4}}&description&state=1&column_set_id={{columnTableRelationsTableColumnCreateSetId}}&id=0",
+									"host": [
+										"{{apiUrl}}{{token}}"
+									],
+									"path": [
+										"tables",
+										"column_table_relations",
+										"store"
+									],
+									"query": [
+										{
+											"key": "name_basic",
+											"value": "İlişkili kolon için ilişki (veri kaynağı ile)"
+										},
+										{
+											"key": "relation_table_id",
+											"value": ""
+										},
+										{
+											"key": "relation_source_column_id",
+											"value": ""
+										},
+										{
+											"key": "relation_display_column_id",
+											"value": ""
+										},
+										{
+											"key": "join_table_ids",
+											"value": "[]"
+										},
+										{
+											"key": "relation_sql",
+											"value": null
+										},
+										{
+											"key": "relation_source_column",
+											"value": ""
+										},
+										{
+											"key": "relation_display_column",
+											"value": ""
+										},
+										{
+											"key": "column_data_source_id",
+											"value": "{{columnDataSourceIdForRelationColumn4}}"
+										},
+										{
+											"key": "description",
+											"value": null
+										},
+										{
+											"key": "state",
+											"value": "1"
+										},
+										{
+											"key": "column_set_id",
+											"value": "{{columnTableRelationsTableColumnCreateSetId}}"
+										},
+										{
+											"key": "id",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Simple Relation Column With Data Source",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var data = pm.response.json();\r",
+											"var id = data[\"data\"][\"id\"]\r",
+											"pm.environment.set(\"columnsColRelation4Id\", id);\r",
+											"\r",
+											"const utils = eval(globals.loadUtils);\r",
+											"utils.standartControl();\r",
+											"utils.idNumberControl(id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{apiUrl}}{{token}}/tables/columns/store?display_name=Örnek İkişkili Kolon  (Veri Kaynağı ile)&name=column_relation4&column_db_type_id={{columnDbTypes_integer_Id}}&column_gui_type_id={{columnGuiTypes_select_Id}}&srid&up_column_id=&column_table_relation_id={{relationIdForRelationColumn4}}&subscriber_ids=[]&column_validation_ids=[\"{{columnValidation_required_Id}}\", \"{{columnValidation_numeric_min_1_Id}}\"]&column_gui_trigger_ids=[]&column_collective_info_id&default&e_sign_pattern_c&column_info&description&state=1&column_set_id={{columnsTableColumnCreateSetId}}&id=0",
+									"host": [
+										"{{apiUrl}}{{token}}"
+									],
+									"path": [
+										"tables",
+										"columns",
+										"store"
+									],
+									"query": [
+										{
+											"key": "display_name",
+											"value": "Örnek İkişkili Kolon  (Veri Kaynağı ile)"
+										},
+										{
+											"key": "name",
+											"value": "column_relation4"
+										},
+										{
+											"key": "column_db_type_id",
+											"value": "{{columnDbTypes_integer_Id}}"
+										},
+										{
+											"key": "column_gui_type_id",
+											"value": "{{columnGuiTypes_select_Id}}"
+										},
+										{
+											"key": "srid",
+											"value": null
+										},
+										{
+											"key": "up_column_id",
+											"value": ""
+										},
+										{
+											"key": "column_table_relation_id",
+											"value": "{{relationIdForRelationColumn4}}"
+										},
+										{
+											"key": "subscriber_ids",
+											"value": "[]"
+										},
+										{
+											"key": "column_validation_ids",
+											"value": "[\"{{columnValidation_required_Id}}\", \"{{columnValidation_numeric_min_1_Id}}\"]"
+										},
+										{
+											"key": "column_gui_trigger_ids",
+											"value": "[]"
+										},
+										{
+											"key": "column_collective_info_id",
+											"value": null
+										},
+										{
+											"key": "default",
+											"value": null
+										},
+										{
+											"key": "e_sign_pattern_c",
+											"value": null
+										},
+										{
+											"key": "column_info",
+											"value": null
+										},
+										{
+											"key": "description",
+											"value": null
+										},
+										{
+											"key": "state",
+											"value": "1"
+										},
+										{
+											"key": "column_set_id",
+											"value": "{{columnsTableColumnCreateSetId}}"
+										},
+										{
+											"key": "id",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Table",
+					"item": [
+						{
+							"name": "Cache Clear",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var data = pm.response.json();\r",
+											"\r",
+											"const utils = eval(globals.loadUtils);\r",
+											"utils.standartControl();\r",
+											"utils.messageControl(data[\"data\"][\"message\"], \"Cache Cleared\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{apiUrl}}{{token}}/missions/1",
+									"host": [
+										"{{apiUrl}}{{token}}"
+									],
+									"path": [
+										"missions",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Test Table",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var data = pm.response.json();\r",
+											"var id = data[\"data\"][\"id\"]\r",
+											"pm.environment.set(\"tablesTestId\", id);\r",
+											"\r",
+											"const utils = eval(globals.loadUtils);\r",
+											"utils.standartControl();\r",
+											"utils.idNumberControl(id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{apiUrl}}{{token}}/tables/tables/store?display_name=Test&name=test&column_ids=[\"{{columnsColJsonId}}\",\"{{columnsColJsonBId}}\",\"{{columnsColStringId}}\",\"{{columnsColTextId}}\",\"{{columnsColIntId}}\",\"{{columnsColFloatId}}\",\"{{columnsColBooleanId}}\",\"{{columnsColDateId}}\",\"{{columnsColTimeId}}\",\"{{columnsColDateTimeId}}\",\"{{columnsColMultiPolygonId}}\",\"{{columnsIllerIdId}}\",\"{{columnsColSimpleUpColumnId}}\",\"{{columnsColRelation1Id}}\",\"{{columnsColRelation2Id}}\",\"{{columnsColRelation3Id}}\",\"{{columnsColRelation4Id}}\"]&subscriber_ids=[]&legend_url&e_sign_pattern_t&description&link_description=link_aciklama&state=1&column_set_id={{tablesTableColumnCreateSetId}}&id=0",
+									"host": [
+										"{{apiUrl}}{{token}}"
+									],
+									"path": [
+										"tables",
+										"tables",
+										"store"
+									],
+									"query": [
+										{
+											"key": "display_name",
+											"value": "Test"
+										},
+										{
+											"key": "name",
+											"value": "test"
+										},
+										{
+											"key": "column_ids",
+											"value": "[\"{{columnsColJsonId}}\",\"{{columnsColJsonBId}}\",\"{{columnsColStringId}}\",\"{{columnsColTextId}}\",\"{{columnsColIntId}}\",\"{{columnsColFloatId}}\",\"{{columnsColBooleanId}}\",\"{{columnsColDateId}}\",\"{{columnsColTimeId}}\",\"{{columnsColDateTimeId}}\",\"{{columnsColMultiPolygonId}}\",\"{{columnsIllerIdId}}\",\"{{columnsColSimpleUpColumnId}}\",\"{{columnsColRelation1Id}}\",\"{{columnsColRelation2Id}}\",\"{{columnsColRelation3Id}}\",\"{{columnsColRelation4Id}}\"]"
+										},
+										{
+											"key": "subscriber_ids",
+											"value": "[]"
+										},
+										{
+											"key": "legend_url",
+											"value": null
+										},
+										{
+											"key": "e_sign_pattern_t",
+											"value": null
+										},
+										{
+											"key": "description",
+											"value": null
+										},
+										{
+											"key": "link_description",
+											"value": "link_aciklama"
+										},
+										{
+											"key": "state",
+											"value": "1"
+										},
+										{
+											"key": "column_set_id",
+											"value": "{{tablesTableColumnCreateSetId}}"
+										},
+										{
+											"key": "id",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Record Operations",
+					"item": [
+						{
+							"name": "Cache Clear",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var data = pm.response.json();\r",
+											"\r",
+											"const utils = eval(globals.loadUtils);\r",
+											"utils.standartControl();\r",
+											"utils.messageControl(data[\"data\"][\"message\"], \"Cache Cleared\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{apiUrl}}{{token}}/missions/1",
+									"host": [
+										"{{apiUrl}}{{token}}"
+									],
+									"path": [
+										"missions",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Map Data Control In Logged In User Info Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var data = pm.response.json();\r",
+											"var info = data[\"data\"]\r",
+											"\r",
+											"const utils = eval(globals.loadUtils);\r",
+											"utils.standartControl();\r",
+											"utils.isTrue(typeof info[\"map\"][\"angaryos__v_test\"] != \"undefined\");\r",
+											"\r",
+											"\r",
+											"\r",
+											"//Set Variables\r",
+											"\r",
+											"pm.environment.set(\"testTableColumnArrayId\", info[\"auths\"][\"tables\"][\"test\"][\"lists\"][0]);\r",
+											"pm.environment.set(\"testTableColumnArrayIdQuery\", info[\"auths\"][\"tables\"][\"test\"][\"queries\"][0]);\r",
+											"pm.environment.set(\"testTableColumnCreateSetId\", info[\"auths\"][\"tables\"][\"test\"][\"creates\"][0]);\r",
+											"pm.environment.set(\"testTableColumnUpdateSetId\", info[\"auths\"][\"tables\"][\"test\"][\"edits\"][0]);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{apiUrl}}{{token}}/getLoggedInUserInfo",
+									"host": [
+										"{{apiUrl}}{{token}}"
+									],
+									"path": [
+										"getLoggedInUserInfo"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get List From Test Table",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var data = pm.response.json();\r",
+											"var recs = data[\"data\"][\"records\"].length\r",
+											"\r",
+											"const utils = eval(globals.loadUtils);\r",
+											"utils.standartControl();\r",
+											"utils.equalControl(0, recs);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{apiUrl}}{{token}}/tables/test/?params={\"page\":1,\"limit\":\"10\",\"column_array_id\":\"{{testTableColumnArrayId}}\",\"column_array_id_query\":\"{{testTableColumnArrayIdQuery}}\",\"sorts\":{},\"filters\":{}}",
+									"host": [
+										"{{apiUrl}}{{token}}"
+									],
+									"path": [
+										"tables",
+										"test",
+										""
+									],
+									"query": [
+										{
+											"key": "params",
+											"value": "{\"page\":1,\"limit\":\"10\",\"column_array_id\":\"{{testTableColumnArrayId}}\",\"column_array_id_query\":\"{{testTableColumnArrayIdQuery}}\",\"sorts\":{},\"filters\":{}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Create Form From Test Table",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var data = pm.response.json();\r",
+											"\r",
+											"const utils = eval(globals.loadUtils);\r",
+											"utils.standartControl();\r",
+											"utils.isTrue(typeof data[\"data\"][\"table_info\"][\"name\"] != \"undefined\");\r",
+											"utils.isTrue(typeof data[\"data\"][\"column_set\"][\"column_arrays\"] != \"undefined\");\r",
+											"utils.isTrue(typeof data[\"data\"][\"gui_triggers\"] != \"undefined\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{apiUrl}}{{token}}/tables/test/create?params={\"column_set_id\":\"{{testTableColumnCreateSetId}}\"}",
+									"host": [
+										"{{apiUrl}}{{token}}"
+									],
+									"path": [
+										"tables",
+										"test",
+										"create"
+									],
+									"query": [
+										{
+											"key": "params",
+											"value": "{\"column_set_id\":\"{{testTableColumnCreateSetId}}\"}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Up Column Select Data Control 1",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var data = pm.response.json();\r",
+											"var id = data[\"results\"][0][\"id\"];\r",
+											"\r",
+											"const utils = eval(globals.loadUtils);\r",
+											"utils.standartControl();\r",
+											"utils.idNumberControl(id);\r",
+											"utils.equalControl(id, pm.environment.get(\"ilcelerSivrihisarId\"));"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{apiUrl}}{{token}}/tables/test/getSelectColumnData/column_simple_up_column?search=***&upColumnName=iller_id&upColumnData={{illerEskisehirId}}&currentFormData={}",
+									"host": [
+										"{{apiUrl}}{{token}}"
+									],
+									"path": [
+										"tables",
+										"test",
+										"getSelectColumnData",
+										"column_simple_up_column"
+									],
+									"query": [
+										{
+											"key": "search",
+											"value": "***"
+										},
+										{
+											"key": "upColumnName",
+											"value": "iller_id"
+										},
+										{
+											"key": "upColumnData",
+											"value": "{{illerEskisehirId}}"
+										},
+										{
+											"key": "currentFormData",
+											"value": "{}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Up Column Select Data Control 2",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var data = pm.response.json();\r",
+											"var id = data[\"results\"][0][\"id\"];\r",
+											"\r",
+											"const utils = eval(globals.loadUtils);\r",
+											"utils.standartControl();\r",
+											"utils.idNumberControl(id);\r",
+											"utils.equalControl(id, pm.environment.get(\"ilcelerAltintasId\"));"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{apiUrl}}{{token}}/tables/test/getSelectColumnData/column_simple_up_column?search=***&upColumnName=iller_id&upColumnData={{illerKutahyaId}}&currentFormData={}",
+									"host": [
+										"{{apiUrl}}{{token}}"
+									],
+									"path": [
+										"tables",
+										"test",
+										"getSelectColumnData",
+										"column_simple_up_column"
+									],
+									"query": [
+										{
+											"key": "search",
+											"value": "***"
+										},
+										{
+											"key": "upColumnName",
+											"value": "iller_id"
+										},
+										{
+											"key": "upColumnData",
+											"value": "{{illerKutahyaId}}"
+										},
+										{
+											"key": "currentFormData",
+											"value": "{}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Relation Column 1 Select Data Control",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var data = pm.response.json();\r",
+											"var id = data[\"results\"][0][\"id\"];\r",
+											"var recs = data[\"results\"].length;\r",
+											"\r",
+											"const utils = eval(globals.loadUtils);\r",
+											"utils.standartControl();\r",
+											"utils.idNumberControl(id);\r",
+											"utils.equalControl(recs, 2);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{apiUrl}}{{token}}/tables/test/getSelectColumnData/column_relation1?search=***",
+									"host": [
+										"{{apiUrl}}{{token}}"
+									],
+									"path": [
+										"tables",
+										"test",
+										"getSelectColumnData",
+										"column_relation1"
+									],
+									"query": [
+										{
+											"key": "search",
+											"value": "***"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Relation Column 2 Select Data Control",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var data = pm.response.json();\r",
+											"var id = data[\"results\"][0][\"id\"];\r",
+											"var recs = data[\"results\"].length;\r",
+											"\r",
+											"const utils = eval(globals.loadUtils);\r",
+											"utils.standartControl();\r",
+											"utils.idNumberControl(id);\r",
+											"utils.equalControl(recs, 2);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{apiUrl}}{{token}}/tables/test/getSelectColumnData/column_relation2?search=***",
+									"host": [
+										"{{apiUrl}}{{token}}"
+									],
+									"path": [
+										"tables",
+										"test",
+										"getSelectColumnData",
+										"column_relation2"
+									],
+									"query": [
+										{
+											"key": "search",
+											"value": "***"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Relation Column 3 Select Data Control",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var data = pm.response.json();\r",
+											"var id = data[\"results\"][0][\"id\"];\r",
+											"var recs = data[\"results\"].length;\r",
+											"\r",
+											"const utils = eval(globals.loadUtils);\r",
+											"utils.standartControl();\r",
+											"utils.idNumberControl(id);\r",
+											"utils.equalControl(recs, 2);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{apiUrl}}{{token}}/tables/test/getSelectColumnData/column_relation3?search=***",
+									"host": [
+										"{{apiUrl}}{{token}}"
+									],
+									"path": [
+										"tables",
+										"test",
+										"getSelectColumnData",
+										"column_relation3"
+									],
+									"query": [
+										{
+											"key": "search",
+											"value": "***"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Relation Column 4 Select Data Control",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var data = pm.response.json();\r",
+											"var id = data[\"results\"][0][\"id\"];\r",
+											"var recs = data[\"results\"].length;\r",
+											"\r",
+											"const utils = eval(globals.loadUtils);\r",
+											"utils.standartControl();\r",
+											"utils.idNumberControl(id);\r",
+											"utils.equalControl(recs, 2);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{apiUrl}}{{token}}/tables/test/getSelectColumnData/column_relation4?search=***",
+									"host": [
+										"{{apiUrl}}{{token}}"
+									],
+									"path": [
+										"tables",
+										"test",
+										"getSelectColumnData",
+										"column_relation4"
+									],
+									"query": [
+										{
+											"key": "search",
+											"value": "***"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Send Fail Data For Create Into Test Table",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var data = pm.response.json();\r",
+											"\r",
+											"const utils = eval(globals.loadUtils);\r",
+											"utils.standartControl();\r",
+											"utils.equalControl(data[\"data\"][\"message\"], \"error\");"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{apiUrl}}{{token}}/tables/test/store?state=1&column_set_id={{testTableColumnCreateSetId}}&id=0",
+									"host": [
+										"{{apiUrl}}{{token}}"
+									],
+									"path": [
+										"tables",
+										"test",
+										"store"
+									],
+									"query": [
+										{
+											"key": "state",
+											"value": "1"
+										},
+										{
+											"key": "column_set_id",
+											"value": "{{testTableColumnCreateSetId}}"
+										},
+										{
+											"key": "id",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}
