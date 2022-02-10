@@ -1,6 +1,6 @@
 # Angaryos
 
-Merhaba. Bu; yazılımcıları yazılımın angarya kısmından kurtarıp esas işe odaklanmalarını sağlayacak olan açık kaynak bir yazılım geliştirme altyapısıdır. Temel olarak veri setlerinizi kaydedip güvenli ve yetki kontrollü bir biçimde; API yada arayüz aracılığı ile sunmanızı ( güncellemenizi / eklemenizi / silmenizi / datanın geçmişini takip edebilmenizi / geri yükleyebilmenizi / export edebilmenizi) sağlar.
+Merhaba. Bu; yazılımcıları yazılımın **angarya kısmından kurtarıp** esas işe odaklanmalarını sağlayacak olan açık kaynak bir yazılım geliştirme altyapısıdır. Temel olarak **veri setlerinizi kaydedip** güvenli ve yetki kontrollü bir biçimde; **API yada arayüz** aracılığı ile **sunmanızı** ( güncellemenizi / eklemenizi / silmenizi / datanın geçmişini takip edebilmenizi / geri yükleyebilmenizi / export edebilmenizi) sağlar.
 
 ![Diagram](./services/files/images/Diagram.png)
 
