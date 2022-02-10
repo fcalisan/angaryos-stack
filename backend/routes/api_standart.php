@@ -74,7 +74,7 @@ Route::group(['prefix' => '{token}'], function ()
     Route::post('tables/{table_name}/{id}/clone', 'TableController@cloneRecord');
     Route::any('tables/{table_name}/{id}/export', 'TableController@export');
     Route::any('tables/{table_name}/{id}/archive', 'TableController@archive');
-    Route::post('tables/{table_name}/{archive_id}/restore', 'TableController@restore');
+    Route::any('tables/{table_name}/{archive_id}/restore', 'TableController@restore');
     Route::post('tables/{table_name}/{id}', 'TableController@show');
     Route::post('tables/{table_name}/{id}/getRelationDataInfo/{column_name}', 'TableController@getRelationDataInfo'); 
 

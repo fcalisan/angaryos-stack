@@ -58,8 +58,8 @@ function getUrlWithCqlFilter($filter)
 
 function proxyToUrl($url)
 {
-    if(strstr($url, 'SERVICE=WFS')) return proxyToWfsUrl($url);
-    else if(strstr($url, 'SERVICE=WMS')) return proxyToWmsUrl($url);
+    if(strstr(strtoupper($url), 'SERVICE=WFS')) return proxyToWfsUrl($url);
+    else if(strstr(strtoupper($url), 'SERVICE=WMS')) return proxyToWmsUrl($url);
     else exit("tanimsiz.servis");
 }
 
