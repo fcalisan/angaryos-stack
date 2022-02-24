@@ -13,7 +13,7 @@ trait BaseModelGetDataColumnTrait
     
     public function getColumns($model, $tableName, $columnArrayOrSetId)
     {
-        $cacheName = 'table:'.$this->getTable().'|type:'.$tableName.'|id:'.$columnArrayOrSetId.'|columnArrayOrSetAndJoins';  
+        $cacheName = 'table:'.$this->getTable().'|type:'.$tableName.'|id:'.$columnArrayOrSetId.'|columnArrayOrSetAndJoins';
         [$data, $joins]  = Cache::rememberForever($cacheName, function() use($model, $tableName, $columnArrayOrSetId)
         {
             global $pipe;
@@ -110,16 +110,25 @@ trait BaseModelGetDataColumnTrait
 
                 $columns->{$column->name} = $column;
             }
-        
+            
+        if(strstr($this->getTable(), '_archive'))
+        {
+            $column = get_attr_from_cache('columns', 'name', 'record_id', '*');
+
+            $column->gui_type_name = get_attr_from_cache('column_gui_types', 'id', $column->column_gui_type_id, 'name');
+            $column->db_type_name = get_attr_from_cache('column_db_types', 'id', $column->column_db_type_id, 'name');
+            $column->table_alias = $this->getTable();
+
+            $columns->{$column->name} = $column;
+        }
+                
         $type = get_attr_from_cache('column_array_types', 'id', $columnArray->column_array_type_id, 'name');
         if($type == 'direct_data')
             if(strlen($columnArray->join_table_ids) > 0)
                 foreach(json_decode($columnArray->join_table_ids) as $joinId)
                 {
                     $join = get_attr_from_cache('join_tables', 'id', $joinId, '*');
-
                     if(!isset($pipe['joins'])) $pipe['joins'] = [];
-
                     array_push($pipe['joins'], $join);
                 }
         
@@ -175,7 +184,7 @@ trait BaseModelGetDataColumnTrait
     
     public function getColumnSet($model, $columnSetId, $form = FALSE)
     {
-        $cacheName = 'table:'.$this->getTable().'|type:column_sets|id:'.$columnSetId.'|columnSetObjectAndJoins';        
+        $cacheName = 'table:'.$this->getTable().'|type:column_sets|id:'.$columnSetId.'|columnSetObjectAndJoins';
         [$data, $joins]  = Cache::rememberForever($cacheName, function() use($model, $columnSetId, $form)
         {
             global $pipe;
@@ -412,7 +421,7 @@ trait BaseModelGetDataColumnTrait
                 $return->{$name}->e_sign = FALSE;
                 if(strlen(@$column->e_sign_pattern_c) > 0) $return->{$name}->e_sign = TRUE;
                 
-                $return->{$name}->column_info = $column->column_info;
+                $return->{$name}->column_info = @$column->column_info;
             }
 
             return $return;

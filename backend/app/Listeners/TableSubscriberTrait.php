@@ -406,6 +406,7 @@ trait TableSubscriberTrait
         
         $params->model->limit($params->limit);
         $params->model->offset($params->limit * ($params->page - 1));
+        
         $records = $params->model->get();
         $records = $record->updateRecordsDataForResponse($records, $params->columns);
         
@@ -466,9 +467,22 @@ trait TableSubscriberTrait
         
         foreach($filters as $filterId)
         {
-            $sqlCode = get_attr_from_cache('data_filters', 'id', $filterId, 'sql_code');
-            $sql = str_replace('TABLE', $tableName, $sqlCode);            
-            $model->whereRaw($sql);
+            $sqlCode = ' '.get_attr_from_cache('data_filters', 'id', $filterId, 'sql_code');
+            $sqlCode = helper('reverse_clear_string_for_db', $sqlCode);            
+            $sqlCode = str_replace('TABLE', $tableName, $sqlCode);          
+            $sqlCode = str_replace(' "', ' '.$tableName.'."', $sqlCode);
+            
+            if(\Request::segment(7) == 'archive' || \Request::segment(6) == 'deleted')
+            {
+                $sqlCode = str_replace($tableName.'.', $tableName.'_archive.', $sqlCode);
+                
+                $sqlCode = str_replace($tableName.'_archive.id', $tableName.'_archive.record_id', $sqlCode);
+                $sqlCode = str_replace('"'.$tableName.'_archive".id', $tableName.'_archive.record_id', $sqlCode);
+                $sqlCode = str_replace($tableName.'_archive."id"', $tableName.'_archive.record_id', $sqlCode);
+                $sqlCode = str_replace('"'.$tableName.'_archive"."id"', $tableName.'_archive.record_id', $sqlCode);
+            }
+            
+            $model->whereRaw($sqlCode);
         }
     }
     

@@ -128,6 +128,35 @@ trait BaseModelSelectColumnDataTrait
     {
         $sql = ' from ('.$params->relation->relation_sql.') as main_table where ';
         
+        
+        
+        //Select Data Filters
+        global $pipe;
+        $user = \Auth::user();
+        $auths = $user->auths;        
+        $filters = @$auths['filters'][$pipe['table']]['selectColumnData'];
+        if(!$filters) $filters = [];
+        foreach($filters as $filter)
+        {
+            $filter = get_Attr_from_cache('data_filters', 'id', $filter, '*');
+            $sqlOrJson = helper('reverse_clear_string_for_db', $filter->sql_code); 
+
+            $temp = @json_decode($sqlOrJson, TRUE);
+
+            if($temp)
+            {
+                if(isset($temp[$pipe['table'].'.'.$params->column->name])) $tempSql = $temp[$pipe['table'].'.'.$params->column->name];
+                else if(isset($temp['*.'.$params->column->name])) $tempSql = $temp['*.'.$params->column->name];
+                else $tempSql = '';
+            } 
+            else $tempSql = $sqlOrJson;
+
+            $tempSql = trim(str_replace(' "', 'main_table."', ' '.$tempSql));
+            if(strlen($tempSql) > 0) $sql .= ' ('.$tempSql.') and';
+        }        
+        
+        
+        
         if(strstr($params->search, 'source:'))
         {
             $searchStr = explode('source:', $params->search)[1];
@@ -158,9 +187,9 @@ trait BaseModelSelectColumnDataTrait
         
         $params->count = DB::select('select count(*) '.$sql)[0]->count;
         
-        $sql .= 'order by ' . $params->relation->relation_source_column . ' limit '.$params->record_per_page.' offset '.(($params->page - 1) * $params->record_per_page );
+        $sql .= ' order by ' . $params->relation->relation_source_column . ' limit '.$params->record_per_page.' offset '.(($params->page - 1) * $params->record_per_page );
         $params->records = DB::select('select * '.$sql);
-        
+                
         $params->relation_source_column_name = $params->relation->relation_source_column;
         $params->relation_display_column_name = $params->relation->relation_display_column;
         
@@ -291,7 +320,35 @@ trait BaseModelSelectColumnDataTrait
         $repository = NULL;
         eval(helper('clear_php_code', $dataSource->php_code));
         
-        $data = $repository->searchRecords($params->search, $params->page, $params->record_per_page);
+        
+        //Select Data Filters
+        $filters = [];
+        
+        global $pipe;
+        $user = \Auth::user();
+        $auths = $user->auths;        
+        $tempFilters = @$auths['filters'][$pipe['table']]['selectColumnData'];
+        if(!$tempFilters) $tempFilters = [];
+        foreach($tempFilters as $filter)
+        {
+            $filter = get_Attr_from_cache('data_filters', 'id', $filter, '*');
+            $sqlOrJson = helper('reverse_clear_string_for_db', $filter->sql_code); 
+
+            $tempData = @json_decode($sqlOrJson, TRUE);
+
+            if($tempData)
+            {
+                if(isset($tempData[$pipe['table'].'.'.$params->column->name])) $tempFilter = $tempData[$pipe['table'].'.'.$params->column->name];
+                else if(isset($tempData['*.'.$params->column->name])) $tempFilter = $tempData['*.'.$params->column->name];
+                else $tempFilter = '';
+            } 
+            else $tempFilter = $sqlOrJson;
+            
+            if(strlen(trim($tempFilter)) > 0) array_push($filters, $tempFilter);
+        }    
+        
+        
+        $data = $repository->searchRecords($params->search, $params->page, $params->record_per_page, $filters);
         
         $return['results'] = [];
         foreach($data['records'] as $source => $display)

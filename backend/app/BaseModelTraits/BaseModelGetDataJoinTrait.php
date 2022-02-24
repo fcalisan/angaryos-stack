@@ -302,7 +302,10 @@ trait BaseModelGetDataJoinTrait
         global $pipe;
         $temp = ' '.$params->join->connection_column_with_alias;
         $temp = str_replace(' "', $pipe['table'].'."', $temp);
-
+        
+        if(\Request::segment(7) == 'archive' || \Request::segment(6) == 'deleted')
+            $temp = str_replace($pipe['table'].'.', $pipe['table'].'_archive.', $temp);
+        
         return $params->model->leftJoin(
                 $params->realtion_table_name, 
                 $params->realtion_column_name, 

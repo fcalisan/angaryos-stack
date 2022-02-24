@@ -12,8 +12,9 @@ return Cache::rememberForever($key, function()
         'creates' => 'Ekleme',
         'edits' => 'Güncelleme', 
         'lists' => 'Liste', 
-        'deleteds' => 'Silinen',
+        'deleteds' => 'Silinen Geri Yükleme',
         'queries' => 'Sorgu',
+        'restore' => 'Kaydın Geçmişi', 
         'shows' => 'Bilgi Kartı'
     ];
 
@@ -22,7 +23,7 @@ return Cache::rememberForever($key, function()
         'list' => 'Liste',
         'update' => 'Güncelleme',
         'delete' => 'Silme', 
-        'restore' => 'Geri Yükleme', 
+        'restore' => 'Kaydın Geçmişi', 
         'show' => 'Bilgi Kartı', 
         'export' => 'Dışa Aktarma',
         'selectColumnData' => 'Seçim Kolonu Datası'
@@ -100,23 +101,23 @@ return Cache::rememberForever($key, function()
         $display = 'Tablolar ' . $table->display_name. ' Kayıt Sil';
         $auths[$source] = helper('reverse_clear_string_for_db', $display);
         
-        $source = 'tables:'.$table->name.':restore:0';
+        /*$source = 'tables:'.$table->name.':restore:0';
         $display = 'Tablolar ' . $table->display_name. ' Kayıt Geri Yükle';
-        $auths[$source] = helper('reverse_clear_string_for_db', $display);
+        $auths[$source] = helper('reverse_clear_string_for_db', $display);*/
         
         $source = 'tables:'.$table->name.':export:0';
         $display = 'Tablolar ' . $table->display_name. ' Kayıt Dışa Aktar';
         $auths[$source] = helper('reverse_clear_string_for_db', $display);
             
-        foreach(['creates', 'lists', 'queries', 'edits', 'shows', 'deleteds'] as $type)
+        foreach(['creates', 'lists', 'queries', 'edits', 'shows', 'deleteds', 'restore'] as $type)
         {
             $source = 'tables:'.$table->name.':'.$type.':0';
-            $display = 'Tablolar ' . $table->display_name. ' ' . $displays[$type] . ' Tüm Kolonlar';
+            $display = 'Tablolar ' . $table->display_name. ' ' . $displays[$type] . ' - Tüm Kolonlar';
             $auths[$source] = helper('reverse_clear_string_for_db', $display);
         }
 
         foreach(\DB::table('column_arrays')->where('table_id', $table->id)->get() as $columnArray)
-            foreach(['lists', 'queries', 'deleteds'] as $type)
+            foreach(['lists', 'queries', 'deleteds', 'restore'] as $type)
             {
                 $source = 'tables:'.$table->name.':'.$type.':'.$columnArray->id;
                 $display = 'Tablolar ' . $table->display_name. ' ' . $displays[$type] . ' ' . $columnArray->name_basic . ' (id: '.$columnArray->id.')';

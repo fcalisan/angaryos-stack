@@ -61,15 +61,9 @@ Route::group(['prefix' => '{token}'], function ()
     Route::any('tables/{table_name}', 'TableController@index');
     Route::post('tables/{table_name}/deleted', 'TableController@deleted');
     Route::post('tables/{table_name}/create', 'TableController@create');
-    
-    //Route::options('tables/{table_name}/store', '\App\Http\Controllers\GeneralController@serviceOk');
-    Route::any('tables/{table_name}/store', 'TableController@store');    
-    
+    Route::any('tables/{table_name}/store', 'TableController@store');  
     Route::post('tables/{table_name}/{id}/edit', 'TableController@edit');
-    
-    //Route::options('tables/{table_name}/{id}/update', '\App\Http\Controllers\GeneralController@serviceOk');
     Route::any('tables/{table_name}/{id}/update', 'TableController@update');
-    
     Route::post('tables/{table_name}/{id}/delete', 'TableController@destroy');
     Route::post('tables/{table_name}/{id}/clone', 'TableController@cloneRecord');
     Route::any('tables/{table_name}/{id}/export', 'TableController@export');
@@ -78,9 +72,7 @@ Route::group(['prefix' => '{token}'], function ()
     Route::post('tables/{table_name}/{id}', 'TableController@show');
     Route::post('tables/{table_name}/{id}/getRelationDataInfo/{column_name}', 'TableController@getRelationDataInfo'); 
 
-    
     Route::post('tables/{table_name}/{id}/getRelationTableData/{tree}', 'TableController@getRelationTableData');
-    
     
     Route::any('tables/{table_name}/getSelectColumnData/{column_name}', 'TableController@getSelectColumnData');
     Route::post('tables/{table_name}/{id}/getRelationTableData/{tree}/getSelectColumnData/{column_name}', 'TableController@getSelectColumnDataInRelationTableData');
