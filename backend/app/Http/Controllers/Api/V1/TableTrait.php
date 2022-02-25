@@ -174,17 +174,21 @@ trait TableTrait
             if($name == 'record_id') continue;
             
             param_value_is_correct($value, 'type', ['required', 'numeric']);
-
+            
             $this->columnIsAuthorized($name, 'query');
             
             if($value->type != 100 && $value->type !=101)
             {
                 param_is_have($value, 'filter');
                 
-                param_value_is_correct(
-                    [$name => $value->filter],
-                    $name,
-                    ['required', '*auto*']);
+                $dbTypeId = get_attr_from_cache('columns', 'name', $name, 'column_db_type_id');
+                $dbTypeName = get_attr_from_cache('column_db_types', 'id', $dbTypeId, 'name');
+                
+                if(!strstr($dbTypeName, 'json'))
+                    param_value_is_correct(
+                        [$name => $value->filter],
+                        $name,
+                        ['required', '*auto*']);
             }
         }
     }

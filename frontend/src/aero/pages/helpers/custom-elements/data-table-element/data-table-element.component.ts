@@ -1008,11 +1008,13 @@ export class DataTableElementComponent implements OnDestroy
         
         if(guiType.indexOf("select") > -1)
         {
+            var lastUrl = window.location.href;
             window.location.href = BaseHelper.backendBaseUrl+"#/privacy-politica";
             //this.generalHelper.navigate('/privacy-politica');
             
-            setTimeout(() => {
-                window.location.href = BaseHelper.baseUrl + "table/"+this.tableName+"/";
+            setTimeout(() => 
+            {
+                window.location.href = lastUrl;
                 //this.generalHelper.navigate("table/"+this.tableName+"/");
             }, 50);
             return;
