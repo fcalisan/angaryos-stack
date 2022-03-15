@@ -245,7 +245,7 @@ brace-expansion@^1.1.7:
 
 braces@^2.3.1:
   version "2.3.1"
-  resolved "https://registry.yarnpkg.com/braces/-/braces-2.3.2.tgz#ba77962e12dff969d6b76711e914b737857bf6a7"
+  resolved "https://registry.yarnpkg.com/braces/-/braces-2.3.1.tgz#ba77962e12dff969d6b76711e914b737857bf6a7"
   integrity sha1-uneWLhLf+WnWt2cR6RS3N4V79qc=
   dependencies:
     expand-range "^1.8.1"
@@ -253,8 +253,8 @@ braces@^2.3.1:
     repeat-element "^1.1.2"
 
 braces@^2.3.1:
-  version "2.3.2"
-  resolved "https://registry.yarnpkg.com/braces/-/braces-2.3.2.tgz#5979fd3f14cd531565e5fa2df1abfff1dfaee729"
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/braces/-/braces-2.3.1.tgz#5979fd3f14cd531565e5fa2df1abfff1dfaee729"
   integrity sha512-aNdbnj9P8PjdXU4ybaWLK2IF3jc/EoDYbC7AazW6to3TRsfXxscC9UXOB5iDiEQrkyIbWp2SLQda4+QAa7nc3w==
   dependencies:
     arr-flatten "^1.1.0"
