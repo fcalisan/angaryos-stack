@@ -1444,6 +1444,7 @@
         },
         {
             "name": "guzzlehttp/psr7",
+
             "version": "2.2.1",
             "source": {
                 "type": "git",
@@ -6891,8 +6892,10 @@
                 "symfony/console": "~2.8|~3.3|~4.0"
             },
             "require-dev": {
+
                 "laravel/framework": "^6.0",
                 "phpunit/phpunit": "^8.0 || ^9.0"
+
             },
             "type": "library",
             "extra": {
