@@ -39,11 +39,16 @@ export abstract class BaseHelper
   public static isIos = null;
   public static isBrowser = null;
   
+  public static loaded = false;
+  
   
   
   public static preLoad()
   {
+    if(this.loaded) return;
+    
     this.fillUserData();
+    this.loaded = true;
   }
 
 
@@ -78,11 +83,6 @@ export abstract class BaseHelper
   public static htmlStripTags(html)
   {
     return html.replace(/&/g, "&amp;").replace(/>/g, "&gt;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
-  }
-
-  public static replaceAll(str, oldStr, newStr)
-  {
-    return str.split(oldStr).join(newStr);
   }
 
   public static doInterval(id, func, params, duration = 1000)

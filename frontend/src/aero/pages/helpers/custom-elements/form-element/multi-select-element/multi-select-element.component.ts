@@ -132,7 +132,7 @@ export class MultiSelectElementComponent
     
     elementOperations()
     {              
-        BaseHelper.getScript('assets/ext_modules/select2/select2.min.js', () => 
+        BaseHelper.getScript('assets/ext_modules/select2/select2.min.js'.tr(), () => 
         {
             switch(this.type)
             {

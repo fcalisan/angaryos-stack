@@ -40,7 +40,7 @@ trait TableSubscriberTrait
         $tableInfo = $model->getTableInfo($params->table_name);
         
         $records = $model->updateRecordsDataForResponse($records, $params->columns);
-        
+        $records = $model->UpdateRecordsDataForTranslate($records, $params->columns);
         $records = $model->updateRecordsESignDataForResponse($records, $tableInfo, $params->columns);
         
         $columns = $model->getFilteredColumns($params->columns);
@@ -154,6 +154,7 @@ trait TableSubscriberTrait
         $records = $params->model->get();
         
         $records = $model->updateRecordsDataForResponse($records, $params->columns);
+        $records = $model->UpdateRecordsDataForTranslate($records, $params->columns);
         
         $tableInfo = $model->getTableInfo($params->table_name);
         
@@ -408,7 +409,9 @@ trait TableSubscriberTrait
         $params->model->offset($params->limit * ($params->page - 1));
         
         $records = $params->model->get();
+        
         $records = $record->updateRecordsDataForResponse($records, $params->columns);
+        $records = $record->UpdateRecordsDataForTranslate($records, $params->columns);
         
         $tableInfo = $record->getTableInfo($params->table_name);
         
@@ -498,8 +501,11 @@ trait TableSubscriberTrait
         
         $params->model->limit($params->limit);
         $params->model->offset($params->limit * ($params->page - 1));
+        
         $records = $params->model->get();
+        
         $records = $params->recordModel->updateRecordsDataForResponse($records, $params->columns);
+        $records = $params->recordModel->UpdateRecordsDataForTranslate($records, $params->columns);
         
         $tableInfo = $params->recordModel->getTableInfo($params->table_name);
         
@@ -1062,11 +1068,10 @@ trait TableSubscriberTrait
         
         $record = $params->model->first();
 
-        $record = $model->updateRecordsDataForResponse($record, $params->columns);
-        
+        $record = $model->updateRecordsDataForResponse($record, $params->columns);        
         $record = $this->replaceRelationColumnDataForForm($model, $record, $columnSet);
-
         $record = $this->filterRecordsColumnWithColumns([$record], $columnSet)[0];
+        $record = $model->UpdateRecordsDataForTranslate([$record], $params->columns)[0];
         
         return 
         [
@@ -1189,6 +1194,7 @@ trait TableSubscriberTrait
         if($record == NULL) custom_abort ('no.auth.for.this.record');
         
         $record = $model->updateRecordsDataForResponse($record, $params->columns);
+        $record = $model->UpdateRecordsDataForTranslate([$record], $params->columns)[0];
         
         return 
         [

@@ -68,9 +68,9 @@ export class FullScreenMapElementComponent
     
     typesMatch = 
     {
-        point: 'Nokta',
-        linestring: 'Çizgi',
-        polygon: 'Alan'
+        point: 'Nokta'.tr(),
+        linestring: 'Çizgi'.tr(),
+        polygon: 'Alan'.tr()
     };
 
     /****    Default Functions     ****/
@@ -157,9 +157,9 @@ export class FullScreenMapElementComponent
                 {
                     case "wfs":
                         cql = encodeURI(cql);
-                        cql = BaseHelper.replaceAll(cql, "=", "%3D");
-                        cql = BaseHelper.replaceAll(cql, "(", "%28");
-                        cql = BaseHelper.replaceAll(cql, ")", "%29");
+                        cql = cql.replaceAll("=", "%3D");
+                        cql = cql.replaceAll("(", "%28");
+                        cql = cql.replaceAll(")", "%29");
 
                         var temp = layer.getSource();
                         var url = temp.url_(temp.getExtent())
@@ -422,9 +422,9 @@ export class FullScreenMapElementComponent
                 
         var cql = await this.getCqlFromFilters(this.currentLayerForFilter, this.tempFilters);
         cql = encodeURI(cql);
-        cql = BaseHelper.replaceAll(cql, "=", "%3D");
-        cql = BaseHelper.replaceAll(cql, "(", "%28");
-        cql = BaseHelper.replaceAll(cql, ")", "%29");
+        cql = cql.replaceAll("=", "%3D");
+        cql = cql.replaceAll("(", "%28");
+        cql = cql.replaceAll(")", "%29");
         
         var temp = this.currentLayerForFilter.getSource();
         var url = temp.url_(temp.getExtent())
@@ -562,7 +562,7 @@ export class FullScreenMapElementComponent
                 operation = "DURING";
                 break;
             default:
-                this.messageHelper.sweetAlert("Haritada tarih/saat tipi için geçersiz filtre tipi:"+filter["type"], "Geçersiz Filtre", "warning");
+                this.messageHelper.sweetAlert("Haritada tarih/saat tipi için geçersiz filtre tipi:".tr()+filter["type"], "Geçersiz Filtre", "warning");
                 return " 1 = 1 ";
                 break;
                 
@@ -609,7 +609,7 @@ export class FullScreenMapElementComponent
                 operation = ">";
                 break;
             default:
-                this.messageHelper.sweetAlert("Haritada sayı tipi için geçersiz filtre tipi:"+filter["type"], "Geçersiz Filtre", "warning");
+                this.messageHelper.sweetAlert("Haritada sayı tipi için geçersiz filtre tipi:".tr()+filter["type"], "Geçersiz Filtre", "warning");
                 return " 1 = 1 ";
                 break;
         }
@@ -642,7 +642,7 @@ export class FullScreenMapElementComponent
                 return " 1 = 1 ";
                 break;
             default:
-                this.messageHelper.sweetAlert("Haritada metin tipi için geçersiz filtre tipi:"+filter["type"], "Geçersiz Filtre", "warning");
+                this.messageHelper.sweetAlert("Haritada metin tipi için geçersiz filtre tipi:".tr()+filter["type"], "Geçersiz Filtre", "warning");
                 return " 1 = 1 ";
                 break;
         }
@@ -693,7 +693,7 @@ export class FullScreenMapElementComponent
         {
             if(typeof data["value"] == "undefined") return;
             
-            this.messageHelper.swalComboBox("Nesne tipi", {point: "Nokta", linestring: "Çizgi", polygon: "Alan"})
+            this.messageHelper.swalComboBox("Nesne tipi", {point: "Nokta".tr(), linestring: "Çizgi".tr(), polygon: "Alan".tr()})
             .then((featureType) =>
             {
                 var wkt = MapHelper.getWktFromNetcad(data['value'], featureType["value"]);                
@@ -735,10 +735,10 @@ export class FullScreenMapElementComponent
     {
         const { value: typeName } = await Swal.fire(
         {
-            title: 'Seçmek istediğiniz tip',
+            title: 'Seçmek istediğiniz tip'.tr(),
             input: 'select',
             inputOptions: types, 
-            inputPlaceholder: 'Tip seçiniz',
+            inputPlaceholder: 'Tip seçiniz'.tr(),
             showCancelButton: false
         });
 
@@ -1729,8 +1729,8 @@ export class FullScreenMapElementComponent
 
     addFeatureOnVectorFeaturesTree(feature)
     {
-        var className = "Yerel Nesneler";
-        var subClassName = "Çizimler";
+        var className = "Yerel Nesneler".tr();
+        var subClassName = "Çizimler".tr();
         var typeName = feature.getGeometry().getType().toLowerCase();
 
         feature['featureObject'] = {'type': 'drawed'};
@@ -2335,14 +2335,14 @@ export class FullScreenMapElementComponent
                 {
                     var inputOptions = {};
                     for(var i = 0; i < data['length']; i++)
-                        inputOptions[i] = data[i]['tableDisplayName'] + ' tablosunun ' + data[i]['columnDisplayName'] + ' kolonuna';
+                        inputOptions[i] = '{0} tablosunun {1} kolonuna'.tr(data[i]['tableDisplayName'], data[i]['columnDisplayName']);
                     
                     const { value: id } = await Swal.fire(
                     {
-                        title: 'Aktarmak istediğiniz tablo ve kolon',
+                        title: 'Aktarmak istediğiniz tablo ve kolon'.tr(),
                         input: 'select',
                         inputOptions: inputOptions,
-                        inputPlaceholder: 'Seçiniz',
+                        inputPlaceholder: 'Seçiniz'.tr(),
                         showCancelButton: false
                     });
 

@@ -12,13 +12,13 @@
                     #dataFullnessState>
                     
                     <option value="">
-                        Tümü
+                        {{ 'Tümü'.tr() }}
                     </option>
                     <option value="100">
-                        Boş Olanlar
+                        {{ 'Boş Olanlar'.tr() }}
                     </option>
                     <option value="101">
-                        Boş Olmayanlar                                                                                        
+                        {{ 'Boş Olmayanlar '.tr() }}                                                                                       
                     </option>
                 </select>
             </td>
@@ -40,7 +40,7 @@
         </tr>
     </table>
 
-    <button *ngIf="showButtons" (click)="detailFilter(null, $event)" type="button" class="btn btn-primary">Filtrele</button>
-    <button *ngIf="showButtons" type="button" class="btn btn-danger" data-dismiss="modal">İptal</button>                
+    <button *ngIf="showButtons" (click)="detailFilter(null, $event)" type="button" class="btn btn-primary">{{ "Filtrele".tr() }}</button>
+    <button *ngIf="showButtons" type="button" class="btn btn-danger" data-dismiss="modal">{{ 'İptal'.tr() }}</button>                
 
 </div>

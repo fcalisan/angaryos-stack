@@ -87,7 +87,7 @@ export class SelectElementComponent
 
     elementOperations()
     {      
-        BaseHelper.getScript('assets/ext_modules/select2/select2.min.js', async () => 
+        BaseHelper.getScript('assets/ext_modules/select2/select2.min.js'.tr(), async () => 
         {
             switch(this.type)
             {

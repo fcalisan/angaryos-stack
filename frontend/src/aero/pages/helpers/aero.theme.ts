@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BaseHelper } from './base';
+import { LanguageHelper } from './language';
 import { SessionHelper } from './session';
 
 declare var $: any;
@@ -96,7 +97,7 @@ export class AeroThemeHelper
           });
         });
 
-        BaseHelper.getScript('assets/ext_modules/select2/select2.min.js');
+        BaseHelper.getScript('assets/ext_modules/select2/select2.min.js'.tr());
         
         BaseHelper.getScript('assets/ext_modules/jsonTreeViewer/libs/jsonTree/jsonTree.js');
         BaseHelper.getScript('assets/ext_modules/slimscrool/jquery.slimscroll.min.js');
@@ -355,7 +356,7 @@ export class AeroThemeHelper
     {
       var homePage =
       {
-        title: 'Panel Anasayfa',
+        title: 'Panel Anasayfa'.tr(),
         icon: 'zmdi-home',
         link: '/'+BaseHelper.angaryosUrlPath+'/home',
       };
@@ -366,7 +367,7 @@ export class AeroThemeHelper
     {
       var page =
       {
-        title: 'Göstergeler',
+        title: 'Göstergeler'.tr(),
         icon: 'zmdi-copy',
         link: '/'+BaseHelper.angaryosUrlPath+'/dashboard',
       };
@@ -377,7 +378,7 @@ export class AeroThemeHelper
     {
       var mapPage =
       {
-        title: 'Harita',
+        title: 'Harita'.tr(),
         icon: 'zmdi-map',
         link: '/'+BaseHelper.angaryosUrlPath+'/map',
       };
@@ -388,7 +389,7 @@ export class AeroThemeHelper
     {
       var mapPage =
       {
-        title: 'İçe Aktar',
+        title: 'İçe Aktar'.tr(),
         icon: 'zmdi-sign-in',
         link: '',
         func: 'importRecord',
@@ -400,7 +401,7 @@ export class AeroThemeHelper
     {
       var mapPage =
       {
-        title: 'Sunucu Logları',
+        title: 'Sunucu Logları'.tr(),
         icon: 'zmdi-code-setting',
         link: '',
         func: 'openBackendLogs',

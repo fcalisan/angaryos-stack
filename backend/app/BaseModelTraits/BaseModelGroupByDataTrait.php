@@ -337,14 +337,21 @@ trait BaseModelGroupByDataTrait
     {
         global $pipe;
         
+        $tableInfo = $this->TranslateTableInfo(get_attr_from_cache('tables', 'name', $pipe['table'], '*'));
+        if(is_array($tableInfo)) $tableInfo = $tableInfo[0];
+        
+        $columns = helper('get_null_object');
+        $columns->{$this->name} = $this;
+        $columns = $this->TranslateColumnNames($pipe['table'], $columns);
+        
         $return = 
         [
             'status' => 'success', 
             'code' => 200, 
             'data' => 
             [
-                'tableDisplayName' => get_attr_from_cache('tables', 'name', $pipe['table'], 'display_name'),
-                'columnDisplayName' => $this->display_name,
+                'tableDisplayName' => $tableInfo,
+                'columnDisplayName' => $columns->{$this->name}->display_name,
                 'columnGuiTypeName' => get_attr_from_cache('column_gui_types', 'id', $this->column_gui_type_id, 'name'),
                 'columnName' => $this->name,
                 'records' => []

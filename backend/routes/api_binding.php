@@ -9,6 +9,9 @@ Route::bind('token', function ($token)
     if($user == NULL) abort(helper('response_error', 'fail.token'));
 
     Auth::login($user);
+    
+    $lang = get_attr_from_cache('languages', 'id', $user->language_id, 'name');
+    if($lang) App::setLocale('en');
 
     return $user;
 });

@@ -25,7 +25,7 @@ export class DetailFilterElementComponent
     filterObject = null;
     show = false;
     
-    constructor(private messageHelper: MessageHelper) {}
+    constructor(private messageHelper: MessageHelper) { }
     
     ngAfterViewInit() 
     {

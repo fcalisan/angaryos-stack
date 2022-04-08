@@ -1,0 +1,8 @@
+[2022-04-07 10:44:45] local.ALERT: Geoserver scale success. scale: 0  
+[2022-04-07 10:44:45] local.ALERT: Geoserver remove files ok  
+[2022-04-07 10:44:53] local.ALERT: Geoserver scale success. scale: 1  
+[2022-04-07 10:45:31] local.ALERT: Create geoserver library ok  
+[2022-04-07 10:45:31] local.ALERT: Geoserver create workspace ok  
+[2022-04-07 10:45:32] local.ALERT: Geoserver create datastore ok  
+[2022-04-07 10:45:51] local.ALERT: Geoserver set default ok  
+[2022-04-07 10:45:51] local.ALERT: Geoserver create users layer job ok  

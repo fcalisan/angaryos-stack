@@ -59,6 +59,7 @@ hazırlanıyor...
 ## Kullanım
 
 Dokümanlar için [tıklayınız](https://github.com/mikroGovernment/angaryos-docs) 
+Varsayılan şifreler için [tıklayınız](https://github.com/mikroGovernment/angaryos-stack/blob/master/backend/.env) 
 
 **** Varsayılan web arayüz teması bir lisans anahtarına ihtiyaç duyar.
 

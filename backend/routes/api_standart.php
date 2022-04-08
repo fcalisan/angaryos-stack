@@ -72,7 +72,7 @@ Route::group(['prefix' => '{token}'], function ()
     Route::post('tables/{table_name}/{id}', 'TableController@show');
     Route::post('tables/{table_name}/{id}/getRelationDataInfo/{column_name}', 'TableController@getRelationDataInfo'); 
 
-    Route::post('tables/{table_name}/{id}/getRelationTableData/{tree}', 'TableController@getRelationTableData');
+    Route::any('tables/{table_name}/{id}/getRelationTableData/{tree}', 'TableController@getRelationTableData');
     
     Route::any('tables/{table_name}/getSelectColumnData/{column_name}', 'TableController@getSelectColumnData');
     Route::post('tables/{table_name}/{id}/getRelationTableData/{tree}/getSelectColumnData/{column_name}', 'TableController@getSelectColumnDataInRelationTableData');

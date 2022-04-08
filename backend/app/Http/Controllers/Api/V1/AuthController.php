@@ -126,9 +126,13 @@ class AuthController extends Controller
         
         $debugUserIds = json_decode(DEBUG_USER_IDS);
         
+        $temp = $user->toSafeArray();
+        $temp['language'] = @get_attr_from_cache('languages', 'id', $temp['language_id'], 'name');
+        if(strlen($temp['language']) == 0) $temp['language'] = DEFAULT_LANGUAGE;
+        
         $data =
         [
-            'user' => $user->toSafeArray(),
+            'user' => $temp,
             'menu' => $user->getMenuArray(),
             'map' => $user->getMapArray(),
             'reports' => $user->getReportsArray(),

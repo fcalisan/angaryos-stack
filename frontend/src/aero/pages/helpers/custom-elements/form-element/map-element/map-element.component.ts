@@ -39,12 +39,12 @@ export class MapElementComponent
     baseElementSelector = "";
     geoColumns = 
     {
-        'point': 'Nokta',
-        'linestring': 'Çizgi',
-        'polygon': 'Alan',
-        'multipoint': 'Nokta(lar)',
-        'multilinestring': 'Çizgi(ler)',
-        'multipolygon': 'Alan(lar)',
+        'point': 'Nokta'.tr(),
+        'linestring': 'Çizgi'.tr(),
+        'polygon': 'Alan'.tr(),
+        'multipoint': 'Nokta(lar)'.tr(),
+        'multilinestring': 'Çizgi(ler)'.tr(),
+        'multipolygon': 'Alan(lar)'.tr()
     }
 
     @Output() changed = new EventEmitter();

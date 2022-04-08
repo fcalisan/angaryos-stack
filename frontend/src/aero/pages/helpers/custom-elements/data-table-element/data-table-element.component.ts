@@ -135,7 +135,7 @@ export class DataTableElementComponent implements OnDestroy
                 th.dataReloadInterval(300);
             });
             
-            BaseHelper.getScript('assets/ext_modules/select2/select2.min.js', async () => 
+            BaseHelper.getScript('assets/ext_modules/select2/select2.min.js'.tr(), async () => 
             {
                 $('#groupByDataSelect'+columnName).select2()
                 .on('select2:select', (event) => 
@@ -189,6 +189,7 @@ export class DataTableElementComponent implements OnDestroy
         this.iconVisibility['deleted'] = !this.lightTable && !this.archiveTable && this.can('deleted');
         this.iconVisibility['create'] = !this.lightTable && !this.archiveTable && this.can('create');
         this.iconVisibility['editMode'] = !this.lightTable && !this.archiveTable;
+        this.iconVisibility['groupMode'] = !this.lightTable && !this.archiveTable;        
         this.iconVisibility['liveDataMode'] = !this.lightTable && !this.archiveTable;
         this.iconVisibility['recodOperations'] = !this.lightTable && !this.archiveTable;
         this.iconVisibility['selectAsUpTable'] = this.can('selectAsUpTable') && !this.archiveTable;
@@ -689,8 +690,8 @@ export class DataTableElementComponent implements OnDestroy
 
         switch (this.params.filters[columnName]['type']) 
         {
-            case 100: return displayName + ": <b>Boş Olanlar</b>";
-            case 101: return displayName + ": <b>Boş Olmayanlar</b>";
+            case 100: return displayName + ": <b>"+ "Boş Olanlar".tr()+"</b>";
+            case 101: return displayName + ": <b>" +"Boş Olmayanlar".tr()+"</b>";
             default: return displayName + ": " + DataHelper.getFilterDescriptionByColumnGuiType(
                                                         columnName,
                                                         guiType,
@@ -831,7 +832,7 @@ export class DataTableElementComponent implements OnDestroy
     getReportFormat()
     {
         var types = ['xlsx', 'pdf', 'csv'];
-        var format = prompt("Hangi formatta indirmek istersiniz? (xlsx, csv yada pdf)", "xlsx");
+        var format = prompt("Hangi formatta indirmek istersiniz? (xlsx, csv yada pdf)".tr(), "xlsx");
         if(!types.includes(format)) format = 'xlsx';
         
         return format;
@@ -899,7 +900,7 @@ export class DataTableElementComponent implements OnDestroy
         this.params.editMode = !this.params.editMode;
         this.saveParamsToLocal();
 
-        this.messageHelper.toastMessage("Düzenleme modu " + (this.params.editMode ? "aktif" : "pasif"));
+        this.messageHelper.toastMessage("Düzenleme modu "+(this.params.editMode ? "aktif" : "pasif"));
     }
     
     toggleLiveDataMode()
@@ -907,7 +908,7 @@ export class DataTableElementComponent implements OnDestroy
         this.params.liveDataMode = !this.params.liveDataMode;
         this.saveParamsToLocal();
 
-        this.messageHelper.toastMessage("Canlı veri modu " + (this.params.liveDataMode ? "aktif" : "pasif"));
+        this.messageHelper.toastMessage("Canlı veri modu "+(this.params.liveDataMode ? "aktif" : "pasif"));
         this.liveDataModeOperations();
     }
     
@@ -1237,11 +1238,11 @@ export class DataTableElementComponent implements OnDestroy
     {
         var nameMap = 
         {
-            'sum': 'Toplam',
-            'avg': 'Ortalama',
-            'min': 'En az',
-            'max': 'En çok',
-            'count': 'Adet'
+            'sum': 'Toplam'.tr(),
+            'avg': 'Ortalama'.tr(),
+            'min': 'En az'.tr(),
+            'max': 'En çok'.tr(),
+            'count': 'Adet'.tr()
         };
 
         var info = data['collectiveInfos'][columnName];
@@ -1296,7 +1297,8 @@ export class DataTableElementComponent implements OnDestroy
     
     restore(record)
     {
-        this.messageHelper.swalConfirm("Kayıt geri yüklenecek", record.id + " id 'li kaydı geri yüklemek istediğinize emin misiniz?", "warning")
+        var msg = "{0} id 'li kaydı geri yüklemek istediğinize emin misiniz?".tr(record.id);
+        this.messageHelper.swalConfirm("Kayıt geri yüklenecek", msg, "warning")
         .then((r) =>
         {
             if(r != true) return;
@@ -1439,7 +1441,7 @@ export class DataTableElementComponent implements OnDestroy
                     for(var j = 0; j < data['errors'][keys[i]].length; j++)
                         list += ' - '+data['errors'][keys[i]][j] + '<br>';
 
-                this.messageHelper.sweetAlert("Klon esnasında bazı hatalar oluştu!<br><br>"+(list), "Hata", "warning");
+                this.messageHelper.sweetAlert("Klon esnasında bazı hatalar oluştu!".tr()+"<br><br>"+(list), "Hata", "warning");
             }
             else
                 this.messageHelper.sweetAlert("Beklenmedik cevap geldi!", "Hata", "warning");
@@ -1471,17 +1473,17 @@ export class DataTableElementComponent implements OnDestroy
     delete(record)
     {
         var title = "Kayıt silinecek";
-        var message = record.id + " id 'li kaydı simek istediğinize emin misiniz?";
+        var message = "Kaydı simek istediğinize emin misiniz? ID: {0}".tr(record.id);
 
         if(this.selectedRecordList.length > 1)
         {
-            title = this.selectedRecordList.length+" kayıt silinecek";
+            title = "{0} kayıt silinecek".tr(this.selectedRecordList.length);
             var message = "";
             for(var i = 0; i < this.selectedRecordList.length; i++)
                 message += this.selectedRecordList[i].id + ", ";
             
             message = message.substr(0, message.length -2);
-            message += " id 'li kayıtları simek istediğinize emin misiniz?";
+            message = "Kayıtları simek istediğinize emin misiniz? ID: {0}".tr(message);
         }
 
         this.messageHelper.swalConfirm(title, message, "warning")
@@ -1685,7 +1687,7 @@ export class DataTableElementComponent implements OnDestroy
             if(typeof data['message'] == "undefined")
                 this.messageHelper.sweetAlert("Beklenmedik cevap geldi!", "Hata", "warning");
             else
-                this.messageHelper.sweetAlert("Tetikleme cevabı: "+data['message'], "Bilgi", "info");
+                this.messageHelper.sweetAlert("Tetikleme cevabı".tr()+":"+data['message'], "Bilgi", "info");
         })
         .catch((e) => 
         { 

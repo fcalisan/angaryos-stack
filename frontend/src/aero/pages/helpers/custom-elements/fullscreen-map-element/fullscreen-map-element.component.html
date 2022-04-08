@@ -25,7 +25,7 @@
                         id="drawButton"  
                         ngbDropdownToggle> 
 
-                        Ekle
+                        {{ 'Ekle'.tr() }}
                     </button>
 
                     <div ngbDropdownMenu>
@@ -34,42 +34,42 @@
                             class="dropdown-item"
                             ngbDropdownItem>
                             
-                            Nokta
+                            {{ 'Nokta'.tr() }}
                         </a>    
                         <a 
                             (click)="drawStart('Point', true)"
                             class="dropdown-item"
                             ngbDropdownItem>
                             
-                            Noktalar
+                            {{ 'Noktalar'.tr() }}
                         </a>  
                         <a 
                             (click)="drawStart('LineString')"
                             class="dropdown-item"
                             ngbDropdownItem>
                             
-                            Çizgi
+                            {{ 'Çizgi'.tr() }}
                         </a>    
                         <a 
                             (click)="drawStart('LineString', true)"
                             class="dropdown-item"
                             ngbDropdownItem>
                             
-                            Çizgiler
+                            {{ 'Çizgiler'.tr() }}
                         </a>  
                         <a 
                             (click)="drawStart('Polygon')"
                             class="dropdown-item"
                             ngbDropdownItem>
                             
-                            Alan
+                            {{ 'Alan'.tr() }}
                         </a>    
                         <a 
                             (click)="drawStart('Polygon', true)"
                             class="dropdown-item"
                             ngbDropdownItem>
                             
-                            Alanlar
+                            {{ 'Alanlar'.tr() }}
                         </a>     
                     </div>
                 </div>
@@ -77,7 +77,7 @@
                 <button [hidden]="drawingInteraction == null" class="btn btn-sm btn-primary" 
                     type="button" (click)="drawEnd()" id="drawEndButtom" >
         
-                    Çizimi Bitir
+                    {{ 'Çizimi Bitir'.tr() }}
                 </button>
             </td>
             <td width="5000px">
@@ -85,12 +85,12 @@
             </td>
             <td *ngIf="netcadAuthControl() && !isMobileDevice()" width="5px">
                 <button (click)="addNetcadFeatures()" class="btn btn-sm btn-primary" type="button">
-                    Netcad 'den Yükle  
+                    {{ 'Netcad \'den Yükle'.tr() }}  
                 </button>
             </td>
             <td *ngIf="kmzAuthControl() && !isMobileDevice()" width="5px">
                 <button (click)="selectKmzFile()" class="btn btn-sm btn-primary" type="button">
-                    KMZ Yükle   
+                    {{ 'KMZ Yükle'.tr() }}   
                 </button>
             </td>
             <td>
@@ -110,7 +110,7 @@
     <table class="light-table">
         <tr>
             <td>
-                <h6 style="padding: 0; margin: 5 0 5 10;">Nesneler</h6>
+                <h6 style="padding: 0; margin: 5 0 5 10;">{{ 'Nesneler'.tr() }} </h6>
             </td>
             <td width="65px" align="right">
                 <div                                                  
@@ -122,7 +122,7 @@
                         id="drawButton"  
                         ngbDropdownToggle> 
 
-                        Dönüştür
+                        {{ 'Dönüştür'.tr() }}
                     </button>
 
                     <div ngbDropdownMenu>
@@ -131,14 +131,14 @@
                             class="dropdown-item"
                             ngbDropdownItem>
                             
-                            Noktaya Dönüştür
+                            {{ 'Noktaya Dönüştür'.tr() }}
                         </a>   
                     </div>
                 </div>
             </td>
             <td width="65px" align="right">
                 <button (click)="dataTransport()" [class]="'btn btn-sm btn-primary ' + (isUpTableRecordSelected() ? '' : ' disabled')" type="button">
-                    Data Aktar  
+                    {{ 'Data Aktar'.tr() }}  
                 </button>
             </td>
             <td width="5px" align="right">
@@ -255,7 +255,7 @@
                                     (click)="toggleFeatureSelected(className, subClassName, typeName, i)"
                                     [class]="'feature-item ' + (feature['selected'] ? 'feature-item-selected' : '') ">
 
-                                    {{ feature['selected'] ? 'Seçilmiş' : 'Seçilmemiş' }}
+                                    {{ (feature['selected'] ? 'Seçilmiş' : 'Seçilmemiş').tr() }}
                                 </div>
                             </div>
                         </div>
@@ -287,7 +287,7 @@
             class="dropdown-item"
             ngbDropdownItem>
             
-            Panel
+            {{ 'Panel'.tr() }}
         </a>    
         <div class="dropdown-divider"></div>
         <a 
@@ -295,7 +295,7 @@
             class="dropdown-item"
             ngbDropdownItem>
             
-            Arama Yap <span class="shortcut">Alt+A</span>
+            {{ 'Arama Yap'.tr() }} <span class="shortcut">Alt+A</span>
         </a>  
         <div class="dropdown-divider"></div>
         <a 
@@ -303,14 +303,14 @@
             class="dropdown-item"
             ngbDropdownItem>
             
-            Katmanlar <span class="shortcut">Alt+K</span>
+            {{ 'Katmanlar'.tr() }} <span class="shortcut">Alt+K</span>
         </a>    
         <a 
             (click)="setToolsBarVisible(true)" 
             class="dropdown-item"
             ngbDropdownItem>
             
-            Araç Çubuğu <span class="shortcut">Alt+C</span>
+            {{ 'Araç Çubuğu'.tr() }} <span class="shortcut">Alt+C</span>
         </a>  
         <a 
             [hidden]="isVectorFeaturesTreeNull()"
@@ -318,7 +318,7 @@
             class="dropdown-item"
             ngbDropdownItem>
             
-            Nesne Ağacı <span class="shortcut">Alt+N</span>
+            {{ 'Nesne Ağacı'.tr() }}<span class="shortcut">Alt+N</span>
         </a> 
     </div>
 </div>
@@ -344,7 +344,7 @@
                     (input)="layerFilterChanged()"
                     [(ngModel)]="layerFilterString"
                     style="background-color: white; max-width: 350px;margin: auto;margin-bottom: 15px"
-                    placeholder="Arama">
+                    placeholder="{{ 'Arama'.tr() }}">
                     
                 <table width="100%">
                     <tr>
@@ -470,7 +470,7 @@
                 </button>
                 
                 <h2>
-                    Arama Sonuçları 
+                    {{ "Arama Sonuçları".tr() }} 
                     <i *ngIf="searching" class="zmdi zmdi-settings zmdi-hc-spin"></i>
                 </h2>
                 
@@ -478,9 +478,9 @@
                     <thead>
                         <tr>
                             <th></th>
-                            <th>Tablo</th>
-                            <th>Kayıt ID</th>
-                            <th>Özet</th>
+                            <th>{{ 'Tablo'.tr() }}</th>
+                            <th>{{ 'Kayıt ID'.tr() }}</th>
+                            <th>{{ 'Özet'.tr() }}</th>
                         </tr>
                     </thead>
                     <tbody *ngFor="let tableName of getKeys(featureList)">
@@ -524,7 +524,7 @@
                     </tbody>
                 </table>
                 <br>
-                **Yalnızca açık olan katmanlar içinde yapılan arama sonuçlarıdır
+                {{ '**Yalnızca açık olan katmanlar içinde yapılan arama sonuçlarıdır'.tr() }}
             </div>
         </div>
     </div>
@@ -544,7 +544,7 @@
                     <i class="zmdi zmdi-close"></i>
                 </button>
                 
-                <h3>Detay Bilgiler</h3>
+                <h3>{{ 'Detay Bilgiler'.tr() }}</h3>
                 
                 <table class="table table-bordered table-striped table-hover" role="grid" >
                     <tbody>
@@ -599,7 +599,7 @@
                 </button>
                 
                 <table style="width:100%"><tr><td style="text-align: center">   
-                    <h3>{{ currentLayerForFilter['authData']['display_name'] }} Filtrele</h3>  
+                    <h3>{{ currentLayerForFilter['authData']['display_name'] }} {{ "Filtrele".tr() }}</h3>  
                 </td></tr></table>
                 
                 <div class="form-group"
@@ -620,7 +620,7 @@
                        </detail-filter-element>
                     </div>
                 </div>
-                <button (click)="doFilter()" class="btn btn-block btn-lg btn-primary">Filtrele</button>
+                <button (click)="doFilter()" class="btn btn-block btn-lg btn-primary">{{ "Filtrele".tr() }}</button>
             </div>
         </div>
     </div>

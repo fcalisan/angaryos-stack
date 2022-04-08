@@ -370,12 +370,12 @@ export abstract class MapHelper
 
   public static getStyleCodeForEval(code)
   {
-    code = BaseHelper.replaceAll(code, " CircleStyle(", " th.CircleStyle(");
-    code = BaseHelper.replaceAll(code, " Style(", " th.Style(");
-    code = BaseHelper.replaceAll(code, " Icon(", " th.Icon(");
-    code = BaseHelper.replaceAll(code, " Text(", " th.Text(");
-    code = BaseHelper.replaceAll(code, " Fill(", " th.Fill(");
-    code = BaseHelper.replaceAll(code, " Stroke(", " th.Stroke(");
+    code = code.replaceAll(" CircleStyle(", " th.CircleStyle(");
+    code = code.replaceAll(" Style(", " th.Style(");
+    code = code.replaceAll(" Icon(", " th.Icon(");
+    code = code.replaceAll(" Text(", " th.Text(");
+    code = code.replaceAll(" Fill(", " th.Fill(");
+    code = code.replaceAll(" Stroke(", " th.Stroke(");
 
     return code;
   }
@@ -1138,8 +1138,8 @@ export abstract class MapHelper
   {
       return Swal.fire(
       {
-          title: 'Emin misiniz?',
-          text: "Bu nesneyi ekleyebilmek için eski nesneler silinecek!",
+          title: 'Emin misiniz?'.tr(),
+          text: "Bu nesneyi ekleyebilmek için eski nesneler silinecek!".tr(),
           icon: "warning",
           showCancelButton: true,
           confirmButtonColor: '#3085d6',

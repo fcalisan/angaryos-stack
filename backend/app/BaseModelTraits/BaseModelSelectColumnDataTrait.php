@@ -12,8 +12,25 @@ trait BaseModelSelectColumnDataTrait
     
     public function getSelectColumnData($params)
     {
+        global $pipe;
+        
         $control = $this->getUpColumnControl($params);
         if($control) return $control;
+        
+        $customLangSearchLimit = 0;
+        $customLangSearchWord = '';
+        $customLangSearchPage = 1;
+        if(!user_language_control())
+        {
+            $customLangSearchWord = $params->search;
+            $params->search = ''; 
+
+            $customLangSearchLimit = isset($params->limit) ? $params->limit : 10;
+            $params->limit = 10000;
+
+            $customLangSearchPage = $params->page;
+            $params->page = 1;
+        }  
         
         $temp = helper('get_null_object');
         $temp->page = $params->page;
@@ -25,11 +42,60 @@ trait BaseModelSelectColumnDataTrait
         $temp->column = $this;
         $temp->record_per_page = isset($params->limit) ? $params->limit : 10;
         
-        return ColumnClassificationLibrary::relation(  $this, 
+        $data = ColumnClassificationLibrary::relation(  $this, 
                                                         __FUNCTION__,
                                                         $this, 
                                                         NULL, 
                                                         $temp);
+        
+        $data = $this->TranslateSelectColumnData($pipe['table'], $this, $data);        
+        if($customLangSearchLimit == 0) return $data;
+
+        return $this->customLangSearchForGetSelectColumnData($data, $customLangSearchWord, $customLangSearchLimit, $customLangSearchPage);
+    }
+    
+    private function customLangSearchForGetSelectColumnData($data, $search, $limit, $page)
+    {
+        if(strlen($search) > 0)
+        {
+            $search = strtolower($search);
+            
+            $temp = [];
+            foreach($data['results'] as $rec)
+            {
+                $source = TRUE;
+                $display = TRUE;
+
+                if(strstr($search, 'source:'))
+                {
+                    $search = explode('source:', $search)[1];
+                    $display = FALSE;
+                }
+                else if(strstr($search, 'display:'))
+                {
+                    $search = explode('display:', $search)[1];
+                    $source = FALSE;
+                }
+                
+                if($source && strstr(strtolower($rec['id']), $search)) array_push($temp, $rec);
+                else if($display && strstr(strtolower($rec['text']), $search)) array_push($temp, $rec);                
+            }
+        }
+        else $temp = $data['results'];
+        
+        $start = ($page - 1) * $limit;
+        $end = $start + $limit;
+
+        $data = ['results' => []];
+        for($i = $start; $i < $end; $i++)
+            if(isset($temp[$i]))
+                array_push($data['results'], $temp[$i]);
+
+        $more = FALSE;
+        if(count($temp) >= $end) $more = TRUE;
+        $data['pagination'] = ['more' => $more];
+
+        return $data;
     }
 
     private function getFirstJoinTableAliasForSelectColumn($relationTable)

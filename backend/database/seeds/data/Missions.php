@@ -143,6 +143,14 @@ else $return = dd("Şifre sıfırlanamadı!");
 
 ?>';
 
+$missions['announcement_control']['name'] = 'Hata aldığın görevleri yeniden kuyruğa ekle';
+$missions['announcement_control']['cron'] = '0 * * * *';
+$missions['announcement_control']['php_code'] = '<?php
+
+\Artisan::call(\'queue:retry all\');
+    
+?>';
+
 foreach($missions as $name => $array)
 {
     $temp = $this->get_base_record();

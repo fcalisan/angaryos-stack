@@ -51,7 +51,7 @@ services:
             - frontend-nw
         deploy:
             mode: replicated
-            replicas: 2
+            replicas: 0
             labels:
                 traefik.frontend.rule: "PathPrefixStrip:/test"
                 traefik.port: "80"

@@ -29,9 +29,13 @@ class DashboardLibrary
         
         $count = DB::table($param1)->count();
         
+        $base = new \App\BaseModel();
+        $info = $base->TranslateTableInfo(get_attr_from_cache('tables', 'name', $param1, '*'));
+        if(is_array($info)) $info = $info[0];
+        
         return 
         [
-            'table_display_name' => get_attr_from_cache('tables', 'name', $param1, 'display_name'),
+            'table_display_name' => $info,
             'count' => $count,
             'all' => $sumAllTablesCounts
         ];

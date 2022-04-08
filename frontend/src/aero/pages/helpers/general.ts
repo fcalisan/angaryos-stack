@@ -341,7 +341,7 @@ export class GeneralHelper
     return rt;
   }
 
-  public startLoading(str = "Bekleyin...") 
+  public startLoading(str = "Bekleyin...".tr()) 
   {
     const Toast = Swal.mixin({
         toast: true,
@@ -356,7 +356,7 @@ export class GeneralHelper
     });
   }
 
-  public stopLoading(str = "Bekleyin...") 
+  public stopLoading(str = "Bekleyin...".tr()) 
   {
     var msg = $('#swal2-title').html();
     if (msg != str) return;
@@ -371,7 +371,7 @@ export class GeneralHelper
 
     Toast.fire({
         icon: "success",
-        title: "Tamamlandı..."
+        title: "Tamamlandı...".tr()
     });
   }
 }
