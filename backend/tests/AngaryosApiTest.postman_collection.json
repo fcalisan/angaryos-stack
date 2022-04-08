@@ -7077,7 +7077,7 @@
 											"    }        \r",
 											"}\r",
 											"\r",
-											"var legend = info[\"map\"][\"angaryos__v_test\"][\"legend_url\"];\r",
+											"var legend = info[\"map\"][\"angaryos__v_users\"][\"legend_url\"];\r",
 											"legend = legend.replace(\"***token***\", pm.environment.get(\"token\"));\r",
 											"legend = legend.replace(\"***width***\", 150);\r",
 											"legend = legend.replace(\"***height***\", 150);\r",
@@ -8282,7 +8282,7 @@
 								"method": "POST",
 								"header": [],
 								"url": {
-									"raw": "{{apiUrl}}{{token}}/tables/users/store?profile_picture_old=null&tc=44444444444&name_basic=Test&surname=Kullanıcı&department_id=1&phone=0 444 444 44 44&email=testuser@angaryos.org&email_verified_at&password=44444444444&auths=[]&srid=7932&remember_token&state=1&location&column_set_id={{tablesUsersColumnCreateSetId}}&id=0",
+									"raw": "{{apiUrl}}{{token}}/tables/users/store?profile_picture_old=null&tc=44444444444&name_basic=Test&surname=Kullanıcı&department_id=1&phone=0 444 444 44 44&email=testuser@angaryos.org&email_verified_at&password=44444444444&auths=[]&srid=7932&remember_token&state=1&location&column_set_id={{tablesUsersColumnCreateSetId}}&id=0&language_id=1",
 									"host": [
 										"{{apiUrl}}{{token}}"
 									],
@@ -8355,6 +8355,10 @@
 										{
 											"key": "id",
 											"value": "0"
+										},
+										{
+											"key": "language_id",
+											"value": "1"
 										}
 									]
 								}
@@ -11651,6 +11655,395 @@
 								{
 									"key": "params",
 									"value": "{\"page\":1,\"limit\":\"10\",\"column_array_id\":\"{{tablesESignsListArrayIdForPublicUser}}\",\"column_array_id_query\":\"{{tablesESignsListArrayIdQueryForPublicUser}}\",\"sorts\":{},\"filters\":{}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Other",
+			"item": [
+				{
+					"name": "Get auths column id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var data = pm.response.json();\r",
+									"var id = data[\"data\"][\"records\"][0][\"id\"]\r",
+									"pm.environment.set(\"columnsAuthsId\", id);\r",
+									"\r",
+									"const utils = eval(globals.loadUtils);\r",
+									"utils.standartControl();\r",
+									"utils.idNumberControl(id);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{apiUrl}}{{token}}/tables/columns/?params={\"page\":1,\"limit\":\"1\",\"column_array_id\":\"{{columnsTableColumnArrayId}}\",\"column_array_id_query\":\"{{columnsTableColumnArrayIdQuery}}\",\"sorts\":{},\"filters\":{\"name\":{\"type\":4,\"guiType\":\"string\",\"filter\":\"auths\"}}}",
+							"host": [
+								"{{apiUrl}}{{token}}"
+							],
+							"path": [
+								"tables",
+								"columns",
+								""
+							],
+							"query": [
+								{
+									"key": "params",
+									"value": "{\"page\":1,\"limit\":\"1\",\"column_array_id\":\"{{columnsTableColumnArrayId}}\",\"column_array_id_query\":\"{{columnsTableColumnArrayIdQuery}}\",\"sorts\":{},\"filters\":{\"name\":{\"type\":4,\"guiType\":\"string\",\"filter\":\"auths\"}}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sub Relation Data For Info Card",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var data = pm.response.json();\r",
+									"\r",
+									"const utils = eval(globals.loadUtils);\r",
+									"utils.standartControl();\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}{{token}}/tables/columns/{{columnsAuthsId}}/getRelationTableData/2:4?params={%22page%22:1,%22limit%22:%223%22,%22column_array_id%22:%224%22,%22column_array_id_query%22:%224%22,%22sorts%22:{},%22filters%22:{},%22editMode%22:false,%22liveDataMode%22:false,%22columnNames%22:[],%22groupBy%22:[],%22filterColumnNames%22:[]}",
+							"host": [
+								"{{apiUrl}}{{token}}"
+							],
+							"path": [
+								"tables",
+								"columns",
+								"{{columnsAuthsId}}",
+								"getRelationTableData",
+								"2:4"
+							],
+							"query": [
+								{
+									"key": "params",
+									"value": "{%22page%22:1,%22limit%22:%223%22,%22column_array_id%22:%224%22,%22column_array_id_query%22:%224%22,%22sorts%22:{},%22filters%22:{},%22editMode%22:false,%22liveDataMode%22:false,%22columnNames%22:[],%22groupBy%22:[],%22filterColumnNames%22:[]}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Language",
+			"item": [
+				{
+					"name": "Update User Language",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var data = pm.response.json();\r",
+									"\r",
+									"const utils = eval(globals.loadUtils);\r",
+									"utils.standartControl();"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}{{token}}/tables/users/1/update?language_id={{enLanguageId}}&column_set_id={{tablesUsersColumnCreateSetId}}&id=1&in_form_column_name=language_id&single_column=language_id",
+							"host": [
+								"{{apiUrl}}{{token}}"
+							],
+							"path": [
+								"tables",
+								"users",
+								"1",
+								"update"
+							],
+							"query": [
+								{
+									"key": "language_id",
+									"value": "{{enLanguageId}}"
+								},
+								{
+									"key": "column_set_id",
+									"value": "{{tablesUsersColumnCreateSetId}}"
+								},
+								{
+									"key": "id",
+									"value": "1"
+								},
+								{
+									"key": "in_form_column_name",
+									"value": "language_id"
+								},
+								{
+									"key": "single_column",
+									"value": "language_id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cache Clear",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var data = pm.response.json();\r",
+									"\r",
+									"const utils = eval(globals.loadUtils);\r",
+									"utils.standartControl();\r",
+									"utils.messageControl(data[\"data\"][\"message\"], \"Cache Cleared\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}{{token}}/missions/1",
+							"host": [
+								"{{apiUrl}}{{token}}"
+							],
+							"path": [
+								"missions",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Columns",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var data = pm.response.json();\r",
+									"var id = data[\"data\"][\"records\"][0][\"id\"]\r",
+									"pm.environment.set(\"columnsNameBasicId\", id);\r",
+									"\r",
+									"const utils = eval(globals.loadUtils);\r",
+									"utils.standartControl();\r",
+									"\r",
+									"var temp = data[\"data\"][\"columns\"][\"display_name\"][\"display_name\"];\r",
+									"utils.equalControl(temp, \"Display Name\");\r",
+									"\r",
+									"temp = data[\"data\"][\"table_info\"][\"display_name\"];\r",
+									"utils.equalControl(temp, \"Columns\");\r",
+									"\r",
+									"temp = data[\"data\"][\"records\"][0][\"column_db_type_id\"];\r",
+									"utils.equalControl(temp, \"String\");\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{apiUrl}}{{token}}/tables/columns/?params={\"page\":1,\"limit\":\"1\",\"column_array_id\":\"{{columnsTableColumnArrayId}}\",\"column_array_id_query\":\"{{columnsTableColumnArrayIdQuery}}\",\"sorts\":{},\"filters\":{\"name\":{\"type\":1,\"guiType\":\"string\",\"filter\":\"name_basic\"}}}",
+							"host": [
+								"{{apiUrl}}{{token}}"
+							],
+							"path": [
+								"tables",
+								"columns",
+								""
+							],
+							"query": [
+								{
+									"key": "params",
+									"value": "{\"page\":1,\"limit\":\"1\",\"column_array_id\":\"{{columnsTableColumnArrayId}}\",\"column_array_id_query\":\"{{columnsTableColumnArrayIdQuery}}\",\"sorts\":{},\"filters\":{\"name\":{\"type\":1,\"guiType\":\"string\",\"filter\":\"name_basic\"}}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Select Column Data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var data = pm.response.json();\r",
+									"\r",
+									"const utils = eval(globals.loadUtils);\r",
+									"utils.standartControl();\r",
+									"\r",
+									"var temp = data[\"results\"][0][\"text\"];\r",
+									"utils.equalControl(temp, \"String\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}{{token}}/tables/columns/getSelectColumnData/column_db_type_id?search=str",
+							"host": [
+								"{{apiUrl}}{{token}}"
+							],
+							"path": [
+								"tables",
+								"columns",
+								"getSelectColumnData",
+								"column_db_type_id"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "str"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var data = pm.response.json();\r",
+									"\r",
+									"const utils = eval(globals.loadUtils);\r",
+									"utils.standartControl();\r",
+									"\r",
+									"var temp = data[\"data\"][\"record\"]['column_db_type_id'][0]['display'];\r",
+									"utils.equalControl(temp, \"String\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}{{token}}/tables/columns/{{columnsNameBasicId}}/edit?params={\"column_set_id\":\"{{columnsTableColumnUpdateSetId}}\"}",
+							"host": [
+								"{{apiUrl}}{{token}}"
+							],
+							"path": [
+								"tables",
+								"columns",
+								"{{columnsNameBasicId}}",
+								"edit"
+							],
+							"query": [
+								{
+									"key": "params",
+									"value": "{\"column_set_id\":\"{{columnsTableColumnUpdateSetId}}\"}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User Language Reverse",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var data = pm.response.json();\r",
+									"\r",
+									"const utils = eval(globals.loadUtils);\r",
+									"utils.standartControl();"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}{{token}}/tables/users/1/update?language_id={{trLanguageId}}&column_set_id={{tablesUsersColumnCreateSetId}}&id=1&in_form_column_name=language_id&single_column=language_id",
+							"host": [
+								"{{apiUrl}}{{token}}"
+							],
+							"path": [
+								"tables",
+								"users",
+								"1",
+								"update"
+							],
+							"query": [
+								{
+									"key": "language_id",
+									"value": "{{trLanguageId}}"
+								},
+								{
+									"key": "column_set_id",
+									"value": "{{tablesUsersColumnCreateSetId}}"
+								},
+								{
+									"key": "id",
+									"value": "1"
+								},
+								{
+									"key": "in_form_column_name",
+									"value": "language_id"
+								},
+								{
+									"key": "single_column",
+									"value": "language_id"
 								}
 							]
 						}
