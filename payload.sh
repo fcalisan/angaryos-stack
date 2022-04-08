@@ -13,4 +13,6 @@ second="\."
 hostAdressTemp=${hostAdress//./$second}
 grep -rl 192.168.10.185 ./frontend/dist/light/ | xargs sed -i 's/192\.168\.10\.185/'"$hostAdressTemp"'/g'
 
+chmod 777 -R ./backend/storage/logs/
+
 echo 'served at https://'"$hostAdress"'/'
