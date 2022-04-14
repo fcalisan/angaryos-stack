@@ -2000,12 +2000,16 @@ export abstract class LanguageHelper
     {
         "tr": "Yukarıda belirtilen haklarınız ile ilgili Kütahya İl Özel İdaresi’na yazılı olarak başvurmanız halinde, talebinizin niteliğine göre en geç 30 (otuz) gün içerisinde ücretsiz olarak yanıt verilecektir. Başvurunuzu açık, anlaşır bir şekilde ve kimlik ve adres bilgilerini tespit edici belgeleri de ekleyerek, yazılı ve ıslak imzalı olarak elden, postayla ya da noter kanalıyla Kütahya İl Özel İdaresi Dumlupınar Bulv. No 111 Kütahya Türkiye adresine ulaştırmanız gerekmektedir.",
         "en": "If you apply in writing to the Kütahya Special Provincial Administration regarding your above-mentioned rights, a free response will be given within 30 (thirty) days at the latest, depending on the nature of your request. You can send your application to Kütahya Special Provincial Administration Dumlupınar Bulv. No. 111 Kütahya Turkey address."
-    },   
-     
+    },
     "assets/ext_modules/select2/select2.min.js":
     {
         "tr": "assets/ext_modules/select2/select2.tr.min.js",
         "en": "assets/ext_modules/select2/select2.en.min.js"
+    },
+    "Dil güncellme esnasında hata oluştu!":
+    {
+        "tr": "Dil güncellme esnasında hata oluştu!",
+        "en": "Error occurred while updating language!"
     }
   };
  

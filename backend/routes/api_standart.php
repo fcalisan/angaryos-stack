@@ -5,7 +5,6 @@ header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Conte
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
 if (@$_SERVER['REQUEST_METHOD'] == "OPTIONS") die();
 
-//Route::options('/{any}', '\App\Http\Controllers\GeneralController@serviceOk');
 
 Route::any('/', '\App\Http\Controllers\GeneralController@serviceOk');
 Route::post('/initializeDb', '\App\Http\Controllers\GeneralController@initializeDb');
@@ -23,23 +22,20 @@ Route::group(['prefix' => 'device/{deviceToken}'], function ()
 Route::group(['prefix' => '{token}'], function ()
 {
     require 'api_binding.php';
-
-    
+        
     Route::any('test', '\App\Http\Controllers\GeneralController@test');
     
-    
     Route::any('eSignControl', 'eSignController@control');
-    
-    
+        
     Route::get('logs', '\App\Http\Controllers\GeneralController@logs');
     
     Route::any('/', '\App\Http\Controllers\GeneralController@serviceOk');
+    
     Route::any('getLoggedInUserInfo', 'AuthController@getLoggedInUserInfo');
-    Route::post('getUserToken/{user_id}', 'AuthController@getUserToken');
-    
-    Route::any('logOut', 'AuthController@LogOut');
-    
+    Route::post('getUserToken/{user_id}', 'AuthController@getUserToken');    
+    Route::any('logOut', 'AuthController@LogOut');    
     Route::post('assignAuth', 'AuthController@assignAuth');
+    Route::any('language/{langId}', 'AuthController@changeLanguage');
     
     
     

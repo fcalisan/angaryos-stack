@@ -178,4 +178,17 @@ class AuthController extends Controller
         return helper('response_success', 'success');
     }
     
+    public function changeLanguage($user, $langId)
+    {
+        $langId = (int)$langId;
+        if($langId < 1) custom_abort("no.id");
+
+        copy_record_to_archive($user);
+        DB::table('users')->where('id', $user->id)->update(['language_id' => $langId]);
+        
+        $s = new \App\Listeners\CacheSubscriber(TRUE);
+        $s->clearUserCache($user);
+
+        return helper('response_success', "OK");
+    }
 }

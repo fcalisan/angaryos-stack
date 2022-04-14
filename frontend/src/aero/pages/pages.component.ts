@@ -35,6 +35,8 @@ export class PagesComponent
   isESignUserTrue = false;
   eSignTimeOut = 1000 * 60 * 5;
   
+  lang = 1;
+  
   announcements = [];
   newAnnouncements = false;
   
@@ -72,6 +74,49 @@ export class PagesComponent
 
     this.generalHelper.saveLastPage(window.location.href);
     BaseHelper.writeToPipe('basePageComponent', this);   
+    
+    try { this.fillLanguage(); } catch (error) { } 
+  }
+  
+  fillLanguage()
+  {
+    switch(BaseHelper.loggedInUserInfo.user.language)
+    {
+      case "tr": 
+        this.lang = 1;
+        break;
+      case "en": 
+        this.lang = 2;
+        break;
+    }  
+  }
+  
+  async langChange(id)
+  {
+    var url = this.sessionHelper.getBackendUrlWithToken()+"language/"+id;
+    var th = this;
+    await this.sessionHelper.doHttpRequest("GET", url) 
+    .then((data) => 
+    {
+      try 
+      {
+        if(data["message"] == "OK")
+        {
+          BaseHelper.loggedInUserInfo = null;
+          th.sessionHelper.getLoggedInUserInfo()
+          .then((data) =>
+          {          
+            setTimeout(function () { window.location.reload(); }, 500);
+          });
+        }
+        else th.messageHelper.sweetAlert("Dil güncellme esnasında hata oluştu!", "Hata!", "error");
+      }
+      catch (error) 
+      {
+        th.messageHelper.sweetAlert("Dil güncellme esnasında hata oluştu!", "Hata!", "error");
+      }
+    })
+    .catch((e) => {  });
   }
   
   async pageRefreshOperations()

@@ -209,6 +209,23 @@
         
         <mobile-app-bar-element></mobile-app-bar-element>
         
+        <div style="text-align: right; position: absolute; right: 80;top: 0;z-index: 99999999;">
+            <select class="form-control ms"
+                    style="width: 100px; height: 26px; padding: 0 5px; margin: 7px;background-color: white;" 
+                    [value]="lang"
+                    (change)="langChange($event.target.value)" 
+                   >
+                   <option value="1" >
+                       Türkçe
+                   </option>
+                   <option value="2" >
+                       English
+                   </option>
+            </select>
+        </div>
+        
+        <br>
+        
         <router-outlet></router-outlet>
         
         <mobile-bottom-menu-element></mobile-bottom-menu-element> 
