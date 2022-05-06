@@ -7,5 +7,4 @@ if(strstr($output, 'Database seeding completed successfully.'))
     @rename('/var/www/app/HelperFunctions/initialize_db.php', '/var/www/app/HelperFunctions/initialize_db'.date("YmdHis").'.php');
     return TRUE;
 }
-else
-    return $output;
+else return $output;
